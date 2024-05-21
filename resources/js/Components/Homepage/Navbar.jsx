@@ -1,4 +1,12 @@
+import { useState } from "react";
+
 export default function Navbar({ active }) {
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+    const toggleMenu = () => {
+        setIsMenuOpen(!isMenuOpen);
+    };
+
     return (
         <nav className="bg-black bg-opacity-50">
             <div className="max-w-screen-2xl font-bai-jamjuree flex flex-wrap items-center justify-between mx-auto p-4">
@@ -9,11 +17,11 @@ export default function Navbar({ active }) {
                     <img src="/img/logo.png" className="h-8" alt="DF Logo" />
                 </a>
                 <button
-                    data-collapse-toggle="navbar-default"
+                    onClick={toggleMenu}
                     type="button"
                     className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
                     aria-controls="navbar-default"
-                    aria-expanded="false"
+                    aria-expanded={isMenuOpen}
                 >
                     <span className="sr-only">Open main menu</span>
                     <svg
@@ -33,7 +41,9 @@ export default function Navbar({ active }) {
                     </svg>
                 </button>
                 <div
-                    className="hidden w-full md:block md:w-auto"
+                    className={`w-full md:block md:w-auto ${
+                        isMenuOpen ? "block" : "hidden"
+                    }`}
                     id="navbar-default"
                 >
                     <ul className="font-medium flex flex-col p-4 md:p-0  md:flex-row md:space-x-8 rtl:space-x-reverse ">

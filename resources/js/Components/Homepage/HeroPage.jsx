@@ -1,20 +1,23 @@
 export default function HeroPage() {
     return (
         <>
-            <div className="flex justify-between flex-wrap items-center max-w-screen-xl mx-auto mt-52 font-bai-jamjuree">
+            <div className="flex justify-center md:justify-between flex-wrap items-center max-w-screen-xl mx-auto mt-52 font-bai-jamjuree">
                 <div className="left">
-                    <h1 className="text-6xl font-bold color-gradient tracking-wide">
+                    <h1 className="text-2xl md:text-6xl font-bold color-gradient tracking-wide">
                         Daffa Fathan
                     </h1>
-                    <p className="text-5xl font-bold tracking-wider">
+                    <p className="text-xl md:text-5xl font-bold tracking-wider">
                         <span className="text-gray-500">Developing </span>
                         App as Problem
                     </p>
-                    <p className="text-5xl font-bold tracking-wider">
+                    <p className="text-xl md:text-5xl font-bold tracking-wider">
                         Solvers for Society
                     </p>
                 </div>
-                <div className="right text-end" style={{ color: "#373737" }}>
+                <div
+                    className="right text-end hidden md:block"
+                    style={{ color: "#373737" }}
+                >
                     <h1
                         className="text-xl font-semibold "
                         style={{ color: "#373737" }}
@@ -27,7 +30,7 @@ export default function HeroPage() {
                 </div>
             </div>
 
-            <div className="service mt-48 font-bai-jamjuree items-center flex justify-evenly mx-auto">
+            <div className="hidden md:flex justify-evenly  mt-48 font-bai-jamjuree items-center mx-auto">
                 <div className="w-72 text-justify">
                     <h1 className="text-xl font-bold">Web App Development</h1>
                     <p className="text-base">
