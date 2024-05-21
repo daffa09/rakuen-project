@@ -39,7 +39,7 @@ export default function Navbar({ active }) {
                     <ul className="font-medium flex flex-col p-4 md:p-0  md:flex-row md:space-x-8 rtl:space-x-reverse ">
                         <li>
                             <a
-                                href="#"
+                                href={route("home")}
                                 className={`block py-2 px-3 md:p-0 hover:text-sky-300  ${
                                     active === "Home"
                                         ? "text-sky-300 font-bold"
@@ -88,15 +88,8 @@ export default function Navbar({ active }) {
                     </ul>
                 </div>
                 <div className="hidden md:block">
-                    <a
-                        href="https://github.com/daffa09"
-                        className="flex items-center rounded-full bg-white border-gradient space-x-3 rtl:space-x-reverse"
-                    >
-                        <img
-                            src="/img/sosmed/github.png"
-                            className="h-8"
-                            alt="Github Logo"
-                        />
+                    <a href="https://github.com/daffa09">
+                        <i className="ri-github-line ri-2x border-gradient rounded-full p-1"></i>
                     </a>
                 </div>
             </div>

@@ -1,35 +1,7 @@
 @import './homepage.css';
 @import './navbar.css';
+@import './colors.css';
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-:root {
-    --primary-color: #65C6C4;
-    --secondary-color: #34699A;
-    --tertiary-color: #F2F2F2;
-    --element-color-1: #113F67;
-    --element-color-2: #434242;
-    --text-color: var(--tertiary-color);
-
-    /* Gradient colors */
-    --gradient-mid-1: #408AB4;
-}
-
-body {
-    background-color: var(--tertiary-color);
-    color: var(--text-color);
-}
-
-.bg-gradient {
-    background: linear-gradient(to right,
-            var(--primary-color) 14%,
-            var(--gradient-mid-1) 45%,
-            var(--secondary-color) 72%,
-            var(--element-color-1) 100%);
-}
-
-.border-gradient {
-    border: 2px solid var(--primary-color);
-}
