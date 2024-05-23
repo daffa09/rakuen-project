@@ -1,6 +1,7 @@
 import { Head } from "@inertiajs/react";
 import Navbar from "@/Components/Homepage/Navbar";
 import HeroPage from "@/Components/Homepage/HeroPage";
+import AboutMe from "@/Components/Homepage/AboutMe";
 
 export default function Homepage(props) {
     return (
@@ -10,6 +11,7 @@ export default function Homepage(props) {
                 <Navbar active={props.active} />
                 <HeroPage />
             </div>
+            <AboutMe />
         </>
     );
 }
