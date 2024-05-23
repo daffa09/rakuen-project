@@ -6,7 +6,7 @@ export default function Homepage(props) {
     return (
         <>
             <Head title={props.title} />
-            <div id="hero" className="relative">
+            <div id="hero">
                 <Navbar active={props.active} />
                 <HeroPage />
             </div>

@@ -30,7 +30,7 @@ export default function HeroPage() {
                 </div>
             </div>
 
-            <div className="hidden md:flex justify-evenly  mt-48 font-bai-jamjuree items-center mx-auto">
+            <div className="hidden md:flex justify-evenly mt-48 font-bai-jamjuree items-center mx-auto">
                 <div className="w-72 text-justify">
                     <h1 className="text-xl font-bold">Web App Development</h1>
                     <p className="text-base">

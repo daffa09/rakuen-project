@@ -19,11 +19,10 @@ export default function Navbar({ active }) {
                 <button
                     onClick={toggleMenu}
                     type="button"
-                    className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+                    className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-200 rounded-lg md:hidden focus:outline-none focus:ring-2 focus:ring-gray-200"
                     aria-controls="navbar-default"
                     aria-expanded={isMenuOpen}
                 >
-                    <span className="sr-only">Open main menu</span>
                     <svg
                         className="w-5 h-5"
                         aria-hidden="true"
@@ -41,16 +40,21 @@ export default function Navbar({ active }) {
                     </svg>
                 </button>
                 <div
-                    className={`w-full md:block md:w-auto ${
-                        isMenuOpen ? "block" : "hidden"
-                    }`}
+                    className={`${
+                        isMenuOpen
+                            ? "fixed top-16 left-0 w-full bg-black bg-opacity-50"
+                            : "hidden"
+                    } md:relative md:block md:w-auto`}
                     id="navbar-default"
                 >
-                    <ul className="font-medium flex flex-col p-4 md:p-0  md:flex-row md:space-x-8 rtl:space-x-reverse ">
+                    <ul
+                        className="font-medium flex flex-col p-4 md:p-0 md:flex-row md:space-x-8 rtl:space-x-reverse"
+                        id="menus"
+                    >
                         <li>
                             <a
                                 href={route("home")}
-                                className={`block py-2 px-3 md:p-0 hover:text-sky-300  ${
+                                className={`block py-2 px-3 md:p-0 hover:text-sky-300 ${
                                     active === "Home"
                                         ? "text-sky-300 font-bold"
                                         : "text-white font-medium"
@@ -62,7 +66,7 @@ export default function Navbar({ active }) {
                         <li>
                             <a
                                 href="#"
-                                className={`block py-2 px-3 md:p-0 hover:text-sky-300  ${
+                                className={`block py-2 px-3 md:p-0 hover:text-sky-300 ${
                                     active === "Portofolio"
                                         ? "text-sky-300 font-bold"
                                         : "text-white font-medium"
@@ -74,7 +78,7 @@ export default function Navbar({ active }) {
                         <li>
                             <a
                                 href="#"
-                                className={`block py-2 px-3 md:p-0 hover:text-sky-300  ${
+                                className={`block py-2 px-3 md:p-0 hover:text-sky-300 ${
                                     active === "Article"
                                         ? "text-sky-300 font-bold"
                                         : "text-white font-medium"
@@ -86,7 +90,7 @@ export default function Navbar({ active }) {
                         <li>
                             <a
                                 href="#"
-                                className={`block py-2 px-3 md:p-0 hover:text-sky-300  ${
+                                className={`block py-2 px-3 md:p-0 hover:text-sky-300 ${
                                     active === "Contact"
                                         ? "text-sky-300 font-bold"
                                         : "text-white font-medium"
