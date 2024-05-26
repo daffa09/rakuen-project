@@ -18,14 +18,11 @@ return new class extends Migration
             $table->string('title');
             $table->string('banner');
             $table->text('content');
-            $table->uuid('id_image');
             $table->string('prototype_link')->nullable();
             $table->boolean('publish')->default(false);
             $table->string('created_by');
             $table->string('updated_by')->nullable();
             $table->timestamps();
-
-            $table->foreign('id_image')->references('id')->on('images');
         });
 
         Schema::enableForeignKeyConstraints();

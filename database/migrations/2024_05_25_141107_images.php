@@ -15,12 +15,10 @@ return new class extends Migration
 
         Schema::create('images', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->uuid('id_project');
+            $table->foreignUuid('id_project')->constrained('projects')->cascadeOnDelete()->cascadeOnUpdate();
             $table->string('image_url');
             $table->string('created_by');
             $table->timestamps();
-
-            $table->foreign('id_project')->references('id')->on('projects');
         });
 
         Schema::enableForeignKeyConstraints();
