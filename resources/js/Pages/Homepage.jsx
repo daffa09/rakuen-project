@@ -1,7 +1,9 @@
 import { Head } from "@inertiajs/react";
-import Navbar from "@/Components/Homepage/Navbar";
+import Navbar from "@/Components/Layouts/Navbar";
 import HeroPage from "@/Components/Homepage/HeroPage";
 import AboutMe from "@/Components/Homepage/AboutMe";
+import ProjectRecent from "@/Components/Homepage/ProjectRecent";
+import Footer from "@/Components/Layouts/Footer";
 
 export default function Homepage(props) {
     return (
@@ -12,6 +14,8 @@ export default function Homepage(props) {
                 <HeroPage />
             </div>
             <AboutMe />
+            <ProjectRecent data={props.data} />
+            <Footer />
         </>
     );
 }

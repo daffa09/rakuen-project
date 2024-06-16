@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Projects;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -12,9 +13,12 @@ class HomepageController extends Controller
      */
     public function index()
     {
+        $data = Projects::orderBy('created_at')->limit(3)->get();
+
         return Inertia::render('Homepage', [
             'title' => 'Homepage',
-            'active' => 'Home'
+            'active' => 'Home',
+            'data' => $data
         ]);
     }
 
