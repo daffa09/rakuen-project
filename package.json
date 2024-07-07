@@ -21,6 +21,7 @@
     },
     "dependencies": {
         "@ckeditor/ckeditor5-build-classic": "^41.4.2",
+        "devicon": "^2.16.0",
         "flowbite": "^2.3.0",
         "remixicon": "^4.2.0"
     }

@@ -22,7 +22,7 @@ const Paginator = ({ meta }) => {
             {prev && (
                 <Link
                     href={prev}
-                    className="text-green-300 hover:text-white border border-green-400 hover:bg-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2"
+                    className="text-gray-100 hover:text-white border-2 border-cyan-600 hover:bg-cyan-800 font-semibold rounded-full text-normal px-5 py-2.5 text-center me-2"
                 >
                     «
                 </Link>
@@ -30,18 +30,18 @@ const Paginator = ({ meta }) => {
             {prevPageUrl && (
                 <Link
                     href={prevPageUrl}
-                    className="text-green-300 hover:text-white border border-green-400 hover:bg-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2"
+                    className="text-gray-100 hover:text-white border-2 border-cyan-600 hover:bg-cyan-800 font-semibold rounded-full text-normal px-5 py-2.5 text-center me-2"
                 >
                     {current - 1}
                 </Link>
             )}
-            <span className="text-green-300 hover:text-white border border-green-400 hover:bg-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2">
+            <span className="text-gray-100 hover:text-white border-2 border-cyanborder-cyan-600 hover:bg-cyan-800 font-semibold rounded-full text-normal px-5 py-2.5 text-center me-2">
                 {current}
             </span>
             {nextPageUrl && (
                 <Link
                     href={nextPageUrl}
-                    className="text-green-300 hover:text-white border border-green-400 hover:bg-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2"
+                    className="text-gray-100 hover:text-white border-2 border-cyan-600 hover:bg-cyan-800 font-semibold rounded-full text-normal px-5 py-2.5 text-center me-2"
                 >
                     {current + 1}
                 </Link>
@@ -49,7 +49,7 @@ const Paginator = ({ meta }) => {
             {next && (
                 <Link
                     href={next}
-                    className="text-green-300 hover:text-white border border-green-400 hover:bg-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2"
+                    className="text-gray-100 hover:text-white border-2 border-cyan-600 hover:bg-cyan-800 font-semibold rounded-full text-normal px-5 py-2.5 text-center me-2"
                 >
                     »
                 </Link>

@@ -18,7 +18,7 @@ class PortofolioController extends Controller
             ->join('categories', 'projects.category_id', '=', 'categories.id')
             ->select('projects.*', 'categories.name as category_name')
             ->orderBy('projects.created_at')
-            ->paginate(2);
+            ->paginate(5);
 
         return Inertia::render('Portofolio', [
             'title' => 'Portofolio',

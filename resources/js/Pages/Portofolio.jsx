@@ -34,8 +34,12 @@ export default function Portofolio(props) {
                             key={i}
                         >
                             <a href="#">
+                                <i className="devicon-laravel-original colored text-3xl mr-2"></i>
+                                <i class="devicon-html5-plain colored text-3xl mr-2"></i>
+                                <i class="devicon-css3-plain colored text-3xl mr-2"></i>
+                                <i class="devicon-javascript-plain colored text-3xl mr-2"></i>
                                 <img
-                                    className="object-cover w-full h-64 rounded-lg"
+                                    className="object-cover w-full h-64 rounded-lg mt-2"
                                     src="/img/morgan.jpg"
                                     alt="project images"
                                 />
