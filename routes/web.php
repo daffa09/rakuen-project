@@ -1,11 +1,14 @@
 <?php
 
 use App\Http\Controllers\HomepageController;
+use App\Http\Controllers\PortofolioController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', [HomepageController::class, 'index'])->name('home');
+Route::get('/portofolio', [PortofolioController::class, 'index'])->name('portofolio');
+Route::get('/portofolio/all', [PortofolioController::class, 'allProject'])->name('portofolio.all');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');

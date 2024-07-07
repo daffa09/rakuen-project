@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('title');
             $table->string('banner');
             $table->text('content');
+            $table->foreignUuid('category_id')->constrained('categories')->cascadeOnDelete()->cascadeOnUpdate();
             $table->string('prototype_link')->nullable();
             $table->boolean('publish')->default(false);
             $table->string('created_by');

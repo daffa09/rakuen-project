@@ -3,7 +3,6 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use App\Models\Images;
 use Illuminate\Support\Str;
 
 
@@ -24,6 +23,7 @@ class ProjectsFactory extends Factory
             'title' => $this->faker->sentence,
             'banner' => $this->faker->imageUrl(),
             'content' => $this->faker->paragraph(),
+            'category_id' => 1,
             'prototype_link' => $this->faker->url(),
             'publish' => $this->faker->boolean(),
             'created_by' => 'Test User',

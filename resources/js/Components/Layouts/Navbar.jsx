@@ -9,13 +9,15 @@ export default function Navbar({ active }) {
 
     return (
         <nav className="bg-black bg-opacity-50">
-            <div className="max-w-screen-2xl font-bai-jamjuree flex flex-wrap items-center justify-between mx-auto p-4">
+            <div className=" font-bai-jamjuree flex flex-wrap items-center justify-between mx-10 p-2">
+                {/* logo DF */}
                 <a
                     href={route("home")}
                     className="flex items-center space-x-3 rtl:space-x-reverse"
                 >
                     <img src="/img/logo.png" className="h-8" alt="DF Logo" />
                 </a>
+                {/* menus */}
                 <button
                     onClick={toggleMenu}
                     type="button"
@@ -65,7 +67,7 @@ export default function Navbar({ active }) {
                         </li>
                         <li>
                             <a
-                                href="#"
+                                href={route("portofolio")}
                                 className={`block py-2 px-3 md:p-0 hover:text-sky-300 ${
                                     active === "Portofolio"
                                         ? "text-sky-300 font-bold"
@@ -101,6 +103,7 @@ export default function Navbar({ active }) {
                         </li>
                     </ul>
                 </div>
+                {/* logo gihtub */}
                 <div className="hidden md:block">
                     <a href="https://github.com/daffa09">
                         <i className="ri-github-line ri-2x border-gradient rounded-full p-1"></i>

@@ -16,6 +16,7 @@ class Projects extends Model
         'title',
         'banner',
         'content',
+        'category_id',
         'prototype_link',
         'publish',
         'created_by',
@@ -25,5 +26,10 @@ class Projects extends Model
     public function image()
     {
         return $this->hasMany(Images::class, 'id', 'id_project');
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Categories::class, 'id', 'category_id');
     }
 }
