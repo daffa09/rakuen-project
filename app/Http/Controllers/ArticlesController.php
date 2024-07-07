@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Articles;
 use App\Http\Requests\StoreArticlesRequest;
 use App\Http\Requests\UpdateArticlesRequest;
+use Inertia\Inertia;
 
 class ArticlesController extends Controller
 {
@@ -13,7 +14,17 @@ class ArticlesController extends Controller
      */
     public function index()
     {
-        //
+        $query = Articles::query()
+            ->orderBy('created_at')
+            ->where('publish', '1')
+            ->orderby('created_at')
+            ->paginate(5);
+
+        return Inertia::render('Articles', [
+            'title' => 'Articles',
+            'active' => 'Articles',
+            "data" => $query
+        ]);
     }
 
     /**

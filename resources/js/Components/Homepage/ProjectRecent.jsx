@@ -29,19 +29,19 @@ export default function ProjectRecent({ data }) {
                         >
                             <a href="#">
                                 <img
-                                    className="rounded-t-lg p-1"
+                                    className="rounded-t-lg p-1 w-full h-64 object-cover"
                                     src={project.banner}
                                     alt="Banner"
                                 />
                             </a>
                             <div className="p-5 bg-gradient-bottom">
                                 <a href="#">
-                                    <h5 className="mb-2 text-2xl font-bold tracking-tight text-white">
-                                        {project.title}
+                                    <h5 className="mb-2 text-xl font-bold tracking-tight text-white">
+                                        {project.title.substring(0, 30) + "..."}
                                     </h5>
                                 </a>
-                                <p className="mb-3 font-normal text-white">
-                                    {project.content.substring(0, 120) + "..."}
+                                <p className="mb-3 text-sm font-normal text-white">
+                                    {project.content.substring(0, 100) + "..."}
                                 </p>
                                 <a
                                     href="#"
@@ -70,7 +70,7 @@ export default function ProjectRecent({ data }) {
                 </div>
                 <div className="flex justify-center">
                     <a
-                        href="#"
+                        href={route("portofolio")}
                         className="text-white bg-gradient focus:outline-none font-medium rounded-full text-sm px-5 py-2.5 text-center mb-5"
                     >
                         More Projects

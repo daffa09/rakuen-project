@@ -79,19 +79,19 @@ export default function Navbar({ active }) {
                         </li>
                         <li>
                             <a
-                                href="#"
+                                href={route("articles")}
                                 className={`block py-2 px-3 md:p-0 hover:text-sky-300 ${
-                                    active === "Article"
+                                    active === "Articles"
                                         ? "text-sky-300 font-bold"
                                         : "text-white font-medium"
                                 }`}
                             >
-                                Article
+                                Articles
                             </a>
                         </li>
                         <li>
                             <a
-                                href="#"
+                                href={route("contact")}
                                 className={`block py-2 px-3 md:p-0 hover:text-sky-300 ${
                                     active === "Contact"
                                         ? "text-sky-300 font-bold"

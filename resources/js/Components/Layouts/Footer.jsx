@@ -12,13 +12,13 @@ export default function Footer() {
                                 <a href={route("home")}>Home</a>
                             </li>
                             <li>
-                                <a href="#">About</a>
+                                <a href={route("portofolio")}>Portofolio</a>
                             </li>
                             <li>
-                                <a href="#">Projects</a>
+                                <a href={route("articles")}>Articles</a>
                             </li>
                             <li>
-                                <a href="#">Contact</a>
+                                <a href={route("contact")}>Contact</a>
                             </li>
                         </ul>
                     </div>

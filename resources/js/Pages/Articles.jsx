@@ -13,12 +13,10 @@ export default function Portofolio(props) {
                 style={{ backgroundColor: "#242424" }}
             >
                 <Navbar active={props.active} />
-                <div className="grid grid-rows-1 grid-cols-4 gap-4 mx-28 p-5 items-center">
+                <div className="mx-28 p-5 m-5">
                     <h1 className="text-5xl font-bold tracking-wide">
-                        Project that I have been{" "}
-                        <span className="color-gradient">done</span>
+                        My Articles
                     </h1>
-                    <img src="/img/arrow.png" alt="" />
                     {/* <input
                         type="text"
                         value={searchTerm}
@@ -34,10 +32,6 @@ export default function Portofolio(props) {
                             key={i}
                         >
                             <a href="#">
-                                <i className="devicon-laravel-original colored text-3xl mr-2"></i>
-                                <i class="devicon-html5-plain colored text-3xl mr-2"></i>
-                                <i class="devicon-css3-plain colored text-3xl mr-2"></i>
-                                <i class="devicon-javascript-plain colored text-3xl mr-2"></i>
                                 <img
                                     className="object-cover w-full h-64 rounded-lg mt-2"
                                     src={project.banner}
@@ -45,6 +39,9 @@ export default function Portofolio(props) {
                                 />
                             </a>
                             <div className="flex flex-col justify-center p-4">
+                                <h5 className="mb-2 text-xl font-bold ">
+                                    {project.category_name}
+                                </h5>
                                 <h2 className="mb-2 text-4xl font-bold ">
                                     {project.title}
                                 </h2>

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ArticlesController;
 use App\Http\Controllers\HomepageController;
 use App\Http\Controllers\PortofolioController;
 use App\Http\Controllers\ProfileController;
@@ -9,6 +10,9 @@ use Inertia\Inertia;
 Route::get('/', [HomepageController::class, 'index'])->name('home');
 Route::get('/portofolio', [PortofolioController::class, 'index'])->name('portofolio');
 Route::get('/portofolio/all', [PortofolioController::class, 'allProject'])->name('portofolio.all');
+
+Route::get('/articles', [ArticlesController::class, 'index'])->name('articles');
+Route::get('/contact', [HomepageController::class, 'contact'])->name('contact');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');

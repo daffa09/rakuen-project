@@ -22,6 +22,14 @@ class HomepageController extends Controller
         ]);
     }
 
+    public function contact()
+    {
+        return Inertia::render('Contact', [
+            'title' => 'Contact',
+            'active' => 'Contact'
+        ]);
+    }
+
     /**
      * Show the form for creating a new resource.
      */

@@ -17,6 +17,7 @@ class PortofolioController extends Controller
         $query = Projects::query()
             ->join('categories', 'projects.category_id', '=', 'categories.id')
             ->select('projects.*', 'categories.name as category_name')
+            ->where('projects.publish', '1')
             ->orderBy('projects.created_at')
             ->paginate(5);
 
