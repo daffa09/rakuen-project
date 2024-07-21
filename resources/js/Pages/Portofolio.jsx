@@ -49,7 +49,10 @@ export default function Portofolio(props) {
                                             alt="New Project"
                                         />
                                     )}
-                                    <i className={project.lang_url}></i>
+                                    {project.lang_urls &&
+                                        project.lang_urls.map((lang, index) => (
+                                            <i className={lang} key={index}></i>
+                                        ))}
                                     <img
                                         className="object-cover w-full h-64 rounded-lg mt-2"
                                         src={project.banner}
@@ -57,6 +60,16 @@ export default function Portofolio(props) {
                                     />
                                 </a>
                                 <div className="flex flex-col justify-center p-4">
+                                    <h5
+                                        className={`mb-2 text-xl font-bold ${
+                                            project.lang_urls.length > 1
+                                                ? "mt-20"
+                                                : ""
+                                        }`}
+                                    >
+                                        {project.category_name}
+                                    </h5>
+
                                     <h2 className="mb-2 text-4xl font-bold ">
                                         {project.title}
                                     </h2>

@@ -13,14 +13,20 @@ class PortofolioController extends Controller
      */
     public function index()
     {
-
         $query = Projects::query()
             ->leftJoin('categories', 'projects.category_id', '=', 'categories.id')
             ->leftJoin('lang_images', 'projects.id', '=', 'lang_images.projects_id')
-            ->select('projects.*', 'categories.name as category_name', 'lang_images.url as lang_url')
+            ->selectRaw('projects.id, projects.title, projects.banner, projects.content, projects.publish, projects.created_at, projects.updated_at, projects.category_id, MAX(categories.name) as category_name, GROUP_CONCAT(lang_images.url) as lang_urls')
             ->where('projects.publish', '1')
+            ->groupBy('projects.id', 'projects.title', 'projects.banner', 'projects.content', 'projects.publish', 'projects.created_at', 'projects.updated_at', 'projects.category_id')
             ->orderBy('projects.created_at')
             ->paginate(5);
+
+        // Memisahkan string 'lang_urls' menjadi array
+        $query->getCollection()->transform(function ($project) {
+            $project->lang_urls = $project->lang_urls ? explode(',', $project->lang_urls) : [];
+            return $project;
+        });
 
         return Inertia::render('Portofolio', [
             'title' => 'Portofolio',
@@ -28,6 +34,7 @@ class PortofolioController extends Controller
             "data" => $query
         ]);
     }
+
 
     public function allProject(Request $request)
     {

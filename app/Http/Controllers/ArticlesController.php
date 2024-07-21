@@ -15,9 +15,10 @@ class ArticlesController extends Controller
     public function index()
     {
         $query = Articles::query()
-            ->orderBy('created_at')
+            ->leftjoin('categories', 'articles.category_id', '=', 'categories.id')
+            ->select('articles.*', 'categories.name as category_name')
             ->where('publish', '1')
-            ->orderby('created_at')
+            ->orderBy('created_at')
             ->paginate(5);
 
         return Inertia::render('Articles', [
