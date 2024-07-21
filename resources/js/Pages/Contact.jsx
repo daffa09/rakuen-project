@@ -1,58 +1,30 @@
 import { Head } from "@inertiajs/react";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import Navbar from "@/Components/Layouts/Navbar";
 import Footer from "@/Components/Layouts/Footer";
 import emailjs from "@emailjs/browser";
 
 export default function Contact(props) {
     const form = useRef();
-    const toast = false;
+    const [notification, setNotification] = useState(false);
 
     const sendEmail = (e) => {
         e.preventDefault();
-
         emailjs
             .sendForm("service_4rxvp0u", "template_kks7r0x", form.current, {
                 publicKey: "3n1HboDcj6TB0EoGy",
             })
             .then(
-                () => {
-                    console.log("SUCCESS!");
+                (result) => {
+                    setNotification(true); // Tampilkan notifikasi
+                    setTimeout(() => {
+                        setNotification(false); // Sembunyikan notifikasi setelah 3 detik
+                    }, 3000);
+                    // clean input
                     form.current.reset();
-                    toast = true;
-                    return (
-                        <>
-                            <div className="flex justify-end mt-5 mr-10">
-                                <div
-                                    id="toast-simple"
-                                    className="flex items-center w-full max-w-xs p-4 space-x-4 text-gray-500 bg-white divide-x  divide-gray-200 rounded-lg shadow "
-                                    role="alert"
-                                >
-                                    <svg
-                                        className="w-5 h-5 text-blue-600 dark:text-blue-500 rotate-45"
-                                        aria-hidden="true"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="none"
-                                        viewBox="0 0 18 20"
-                                    >
-                                        <path
-                                            stroke="currentColor"
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            strokeWidth="2"
-                                            d="m9 17 8 2L9 1 1 19l8-2Zm0 0V9"
-                                        />
-                                    </svg>
-                                    <div className="ps-4 text-sm font-normal">
-                                        Message sent successfully.
-                                    </div>
-                                </div>
-                            </div>
-                        </>
-                    );
                 },
                 (error) => {
-                    console.log("FAILED...", error.text);
+                    console.error(error.text);
                 }
             );
     };
@@ -66,6 +38,35 @@ export default function Contact(props) {
             >
                 <Navbar active={props.active} />
                 <div className="flex-grow">
+                    {notification && (
+                        <div className="flex justify-end mt-5 mr-10">
+                            <div
+                                id="toast-simple"
+                                className="flex items-center max-w-xl p-4 space-x-4 text-gray-500 bg-white divide-x divide-gray-200 rounded-lg shadow"
+                                role="alert"
+                            >
+                                <svg
+                                    className="w-5 h-5 text-blue-600 dark:text-blue-500 rotate-45"
+                                    aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 18 20"
+                                >
+                                    <path
+                                        stroke="currentColor"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth="2"
+                                        d="m9 17 8 2L9 1 1 19l8-2Zm0 0V9"
+                                    />
+                                </svg>
+                                <div className="ps-4 text-sm font-normal">
+                                    Message sent successfully. I will be reply
+                                    soon.
+                                </div>
+                            </div>
+                        </div>
+                    )}
                     <div className="grid grid-cols-2 p-10 gap-5">
                         {/* left side */}
                         <div className=" mx-24 bg-gray-200 text-black rounded-md p-5 mr-3">
