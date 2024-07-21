@@ -69,11 +69,11 @@ export default function Contact(props) {
                     )}
                     <div className="grid grid-cols-2 p-10 gap-5">
                         {/* left side */}
-                        <div className=" mx-24 bg-gray-200 text-black rounded-md p-5 mr-3">
+                        <div className=" mx-24 text-gray-50 rounded-md p-5 mr-3">
                             <h1 className="font-semibold text-6xl mb-2 tracking-wider">
                                 Get In Touch
                             </h1>
-                            <p className="font-normal text-justify">
+                            <p className="font-normal text-justify w-5/6">
                                 Let's talk tech! I'm eager to dive into new
                                 projects or discuss anything tech-related with
                                 you. From brainstorming ideas to exploring the
@@ -138,7 +138,7 @@ export default function Contact(props) {
                         </div>
 
                         {/* right side */}
-                        <div className="text-black grid items-center">
+                        <div className="text-black font-normal grid items-center">
                             <form ref={form} onSubmit={sendEmail}>
                                 <div className="grid mb-3">
                                     <label
