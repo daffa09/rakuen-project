@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Categories extends Model
+class LangImages extends Model
 {
     use HasFactory;
 
@@ -15,11 +15,6 @@ class Categories extends Model
 
     public function projects()
     {
-        return $this->hasMany(Projects::class, 'category_id', 'id');
-    }
-
-    public function articles()
-    {
-        return $this->hasMany(Articles::class, 'category_id', 'id');
+        return $this->hasMany(Projects::class, 'projects_id', 'id');
     }
 }

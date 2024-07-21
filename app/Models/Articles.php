@@ -14,6 +14,7 @@ class Articles extends Model
         'title',
         'banner',
         'content',
+        'category_id',
         'created_by',
         'updated_by',
     ];

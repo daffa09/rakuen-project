@@ -21,6 +21,7 @@ class ArticlesFactory extends Factory
             'title' => $this->faker->sentence,
             'banner' => $this->faker->imageUrl,
             'content' => $this->faker->paragraph,
+            'category_id' => 1,
             'publish' => $this->faker->boolean,
             'created_by' => $this->faker->name,
         ];

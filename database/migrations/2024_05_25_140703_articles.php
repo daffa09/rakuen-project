@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('banner');
             $table->text('content');
             $table->boolean('publish')->default(false);
+            $table->foreignUuid('category_id')->constrained('categories')->cascadeOnDelete()->cascadeOnUpdate();
             $table->string('created_by');
             $table->string('updated_by')->nullable();
             $table->timestamps();

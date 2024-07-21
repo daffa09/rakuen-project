@@ -5,6 +5,7 @@ import Paginator from "@/Components/Paginator";
 
 export default function Portofolio(props) {
     const data = props.data ? props.data.data : [];
+    console.log(data);
     return (
         <>
             <Head title={props.title} />
@@ -48,10 +49,7 @@ export default function Portofolio(props) {
                                             alt="New Project"
                                         />
                                     )}
-                                    <i className="devicon-laravel-original colored text-3xl mr-2"></i>
-                                    <i className="devicon-html5-plain colored text-3xl mr-2"></i>
-                                    <i className="devicon-css3-plain colored text-3xl mr-2"></i>
-                                    <i className="devicon-javascript-plain colored text-3xl mr-2"></i>
+                                    <i className={project.lang_url}></i>
                                     <img
                                         className="object-cover w-full h-64 rounded-lg mt-2"
                                         src={project.banner}
