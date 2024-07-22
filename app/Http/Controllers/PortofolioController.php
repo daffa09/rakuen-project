@@ -35,6 +35,30 @@ class PortofolioController extends Controller
         ]);
     }
 
+    public function indexDashboard()
+    {
+        $query = Projects::query()
+            ->leftJoin('categories', 'projects.category_id', '=', 'categories.id')
+            ->leftJoin('lang_images', 'projects.id', '=', 'lang_images.projects_id')
+            ->selectRaw('projects.id, projects.title, projects.banner, projects.content, projects.publish, projects.created_at, projects.updated_at, projects.category_id, MAX(categories.name) as category_name, GROUP_CONCAT(lang_images.url) as lang_urls')
+            ->groupBy('projects.id', 'projects.title', 'projects.banner', 'projects.content', 'projects.publish', 'projects.created_at', 'projects.updated_at', 'projects.category_id')
+            ->orderBy('projects.created_at')
+            ->paginate(10);
+
+        // Memisahkan string 'lang_urls' menjadi array
+        $query->getCollection()->transform(function ($project) {
+            $project->lang_urls = $project->lang_urls ? explode(',', $project->lang_urls) : [];
+            return $project;
+        });
+
+
+        return Inertia::render('Dashboard/Projects/Index', [
+            'title' => 'Projects',
+            'active' => 'Projects',
+            "data" => $query
+        ]);
+    }
+
 
     public function allProject(Request $request)
     {
