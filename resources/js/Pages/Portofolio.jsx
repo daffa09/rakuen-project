@@ -5,7 +5,6 @@ import Paginator from "@/Components/Paginator";
 
 export default function Portofolio(props) {
     const data = props.data ? props.data.data : [];
-    console.log(data);
     return (
         <>
             <Head title={props.title} />
