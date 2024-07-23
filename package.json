@@ -23,6 +23,7 @@
         "@emailjs/browser": "^4.4.1",
         "devicon": "^2.16.0",
         "flowbite": "^2.3.0",
+        "quill-image-resize-module-react": "^3.0.0",
         "react-quill": "^2.0.0",
         "remixicon": "^4.2.0"
     }

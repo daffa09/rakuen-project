@@ -1,9 +1,21 @@
-import React, { useState } from "react";
-import ReactQuill from "react-quill";
+import React, { useState, useRef, useEffect } from "react";
+import ReactQuill, { Quill } from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import ImageResize from "quill-image-resize-module-react";
+
+// Register the module
+Quill.register("modules/imageResize", ImageResize);
 
 export default function Editor() {
     const [value, setValue] = useState("");
+    const quillRef = useRef(null);
+
+    useEffect(() => {
+        if (quillRef.current) {
+            const editor = quillRef.current.getEditor();
+            // Any additional logic if needed
+        }
+    }, []);
 
     const modules = {
         toolbar: [
@@ -18,6 +30,9 @@ export default function Editor() {
             ["link", "image"],
             ["clean"],
         ],
+        imageResize: {
+            modules: ["Resize", "DisplaySize", "Toolbar"],
+        },
     };
 
     const formats = [
@@ -37,6 +52,7 @@ export default function Editor() {
     return (
         <div className="text-editor">
             <ReactQuill
+                ref={quillRef}
                 className="bg-white text-black"
                 theme="snow"
                 value={value}
