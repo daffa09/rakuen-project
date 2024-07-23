@@ -82,7 +82,10 @@ class PortofolioController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Dashboard/Projects/Create', [
+            'title' => 'Projects',
+            'active' => 'Projects',
+        ]);
     }
 
     /**

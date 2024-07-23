@@ -23,12 +23,12 @@ export default function Index(props) {
                     </h1>
                     <div className="relative overflow-x-auto shadow-md sm:rounded-lg mb-5">
                         <div className="flex justify-end mb-5">
-                            <button
-                                type="submit"
-                                className="bg-blue-500 text-white rounded-md p-2 font-semibold w-28 "
+                            <a
+                                href={route("projects.create")}
+                                className="bg-blue-500 text-white rounded-md p-2 font-semibold w-28 text-center cursor-pointer"
                             >
                                 Create
-                            </button>
+                            </a>
                         </div>
                         <table className="w-full text-sm text-left rtl:text-right text-gray-400">
                             <thead className="text-xs uppercase bg-gray-700 text-gray-400">

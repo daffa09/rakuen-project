@@ -20,10 +20,10 @@
         "vite": "^5.0"
     },
     "dependencies": {
-        "@ckeditor/ckeditor5-build-classic": "^41.4.2",
         "@emailjs/browser": "^4.4.1",
         "devicon": "^2.16.0",
         "flowbite": "^2.3.0",
+        "react-quill": "^2.0.0",
         "remixicon": "^4.2.0"
     }
 }
