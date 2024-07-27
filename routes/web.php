@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ArticlesController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HomepageController;
 use App\Http\Controllers\PortofolioController;
 use App\Http\Controllers\ProfileController;
@@ -30,6 +31,10 @@ Route::middleware('auth', 'verified')->group(function () {
     // projects
     Route::get('/projects', [PortofolioController::class, 'indexDashboard'])->name('projects.indexDashboard');
     Route::get('/projects/create', [PortofolioController::class, 'create'])->name('projects.create');
+    Route::post('/projects', [PortofolioController::class, 'store'])->name('projects.store');
+
+    // category
+    Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
 });
 
 require __DIR__ . '/auth.php';

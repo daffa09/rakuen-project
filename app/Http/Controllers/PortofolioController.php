@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Projects;
+use App\Models\Images;
+use App\Models\Gallery;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -45,12 +47,15 @@ class PortofolioController extends Controller
             ->orderBy('projects.created_at')
             ->paginate(10);
 
-        // Memisahkan string 'lang_urls' menjadi array
+        // Transform the collection to ensure 'lang_urls' is an array
         $query->getCollection()->transform(function ($project) {
-            $project->lang_urls = $project->lang_urls ? explode(',', $project->lang_urls) : [];
+            // Assuming the image URLs are relative and stored in the 'storage' directory
+            $project->banner = asset('storage/' . $project->banner); // Adjust this if necessary
+            $project->lang_urls = $project->lang_urls ? array_map(function ($url) {
+                return asset('storage/' . $url); // Adjust this if necessary
+            }, explode(',', $project->lang_urls)) : [];
             return $project;
         });
-
 
         return Inertia::render('Dashboard/Projects/Index', [
             'title' => 'Projects',
@@ -58,6 +63,7 @@ class PortofolioController extends Controller
             "data" => $query
         ]);
     }
+
 
 
     public function allProject(Request $request)
@@ -93,7 +99,65 @@ class PortofolioController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Validate the request
+        $validatedData = $request->validate([
+            'title' => 'required|string|max:255',
+            'banner' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'content' => 'required|string',
+            'category' => 'required|exists:categories,id',
+            'gallery' => 'nullable|array',
+            'gallery.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        // Handle banner upload
+        if ($request->hasFile('banner')) {
+            $validatedData['banner'] = $request->file('banner')->store('banners', 'public');
+        }
+
+        // Handle gallery upload
+        $galleryPaths = [];
+        if ($request->hasFile('gallery')) {
+            foreach ($request->file('gallery') as $file) {
+                $galleryPaths[] = $file->store('galleries', 'public');
+            }
+        }
+
+
+        // Create the project
+        $project = new Projects();
+        $project->id = (string) \Illuminate\Support\Str::uuid();
+        $project->title = $validatedData['title'];
+        $project->banner = $validatedData['banner'] ?? null;
+        $project->content = $validatedData['content'];
+        $project->category_id = $validatedData['category'];
+        $project->publish = 0; // Set to 0 by default
+        $project->created_by = auth()->id();
+        $project->created_at = now();
+        $project->save();
+
+        // create image for banner
+        $image = new Images();
+        $image->id = (string) \Illuminate\Support\Str::uuid();
+        $image->id_project = $project->id;
+        $image->image_url = $project->banner;
+        $image->created_by = auth()->id();
+        $image->created_at = now();
+        $image->save();
+
+        // Save gallery images
+        if (!empty($galleryPaths)) {
+            foreach ($galleryPaths as $path) {
+                $gallery = new Gallery();
+                $gallery->id = (string) \Illuminate\Support\Str::uuid();
+                $gallery->id_project = $project->id;
+                $gallery->image_url = $path;
+                $gallery->created_by = auth()->id();
+                $gallery->save();
+            }
+        }
+
+        // Redirect or return a response
+        return redirect()->route('projects.indexDashboard')->with('success', 'Project created successfully');
     }
 
     /**

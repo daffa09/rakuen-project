@@ -20,7 +20,9 @@ class Projects extends Model
         'prototype_link',
         'publish',
         'created_by',
+        "created_at",
         'updated_by',
+        "updated_at",
     ];
 
     public function image()
@@ -31,5 +33,10 @@ class Projects extends Model
     public function category()
     {
         return $this->belongsTo(Categories::class, 'id', 'category_id');
+    }
+
+    public function gallery()
+    {
+        return $this->hasMany(Gallery::class, 'id', 'id_project');
     }
 }

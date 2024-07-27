@@ -6,8 +6,7 @@ import ImageResize from "quill-image-resize-module-react";
 // Register the module
 Quill.register("modules/imageResize", ImageResize);
 
-export default function Editor() {
-    const [value, setValue] = useState("");
+export default function Editor({ value, onChange }) {
     const quillRef = useRef(null);
 
     useEffect(() => {
@@ -56,7 +55,7 @@ export default function Editor() {
                 className="bg-white text-black"
                 theme="snow"
                 value={value}
-                onChange={setValue}
+                onChange={onChange}
                 modules={modules}
                 formats={formats}
             />

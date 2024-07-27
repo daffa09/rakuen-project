@@ -15,7 +15,8 @@ class CategorySeeder extends Seeder
     {
         Categories::create([
             "id" => 1,
-            'name' => 'Web Development'
+            'name' => 'Web Development',
+            "created_by" => 'Migration',
         ]);
     }
 }

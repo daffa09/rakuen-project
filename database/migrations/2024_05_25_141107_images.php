@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignUuid('id_project')->constrained('projects')->cascadeOnDelete()->cascadeOnUpdate();
             $table->string('image_url');
             $table->string('created_by');
+            $table->string('updated_by')->nullable();
             $table->timestamps();
         });
 

@@ -13,11 +13,10 @@ return new class extends Migration
     {
         Schema::disableForeignKeyConstraints();
 
-        Schema::create('lang_images', function (Blueprint $table) {
-            $table->id();
-            $table->foreignUuid('projects_id')->constrained('projects')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->string('name');
-            $table->string('url');
+        Schema::create('gallery', function (Blueprint $table) {
+            $table->uuid('id')->primary();
+            $table->foreignUuid('id_project')->constrained('projects')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->string('image_url');
             $table->string('created_by');
             $table->string('updated_by')->nullable();
             $table->timestamps();
@@ -31,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('lang_images');
+        Schema::dropIfExists('gallery');
     }
 };
