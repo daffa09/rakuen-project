@@ -82,7 +82,7 @@ export default function Portofolio(props) {
                                             project.lang_urls.map(
                                                 (lang, index) => (
                                                     <i
-                                                        className={`text-4xl ml-1 ${lang}`} // apply the class names properly
+                                                        className={`text-4xl mr-3 ${lang}`}
                                                         key={index}
                                                     ></i>
                                                 )

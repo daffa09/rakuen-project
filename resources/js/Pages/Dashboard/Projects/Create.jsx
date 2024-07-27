@@ -222,6 +222,14 @@ export default function Index({ auth }) {
                             </div>
                             <div className="mb-4">
                                 <button
+                                    onClick={() => {
+                                        history.back();
+                                    }}
+                                    className="bg-red-500 text-white px-4 py-2 rounded-md mr-5"
+                                >
+                                    Back to List
+                                </button>
+                                <button
                                     type="submit"
                                     className="bg-indigo-500 text-white px-4 py-2 rounded-md"
                                 >
