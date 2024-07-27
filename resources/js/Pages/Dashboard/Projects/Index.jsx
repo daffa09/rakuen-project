@@ -7,6 +7,8 @@ export default function Index(props) {
     const data = props.data.data;
     const meta = props.data;
 
+    console.log(data);
+
     return (
         <AuthenticatedLayout user={auth.user}>
             <Head title="Projects" />
@@ -30,7 +32,7 @@ export default function Index(props) {
                                 Create
                             </a>
                         </div>
-                        <table className="w-full text-sm text-left rtl:text-right text-gray-400">
+                        <table className="w-full text-sm rtl:text-right text-gray-400">
                             <thead className="text-xs uppercase bg-gray-700 text-gray-400">
                                 <tr className="text-center">
                                     <th scope="col" className="px-6 py-3">
@@ -95,22 +97,27 @@ export default function Index(props) {
                                         <td className="px-6 py-4 text-right">
                                             <a
                                                 href="#"
-                                                className="font-medium text-2xl ml-3 text-blue-500 hover:text-white"
-                                            >
-                                                <i className="ri-pencil-line"></i>
-                                            </a>
-                                            <a
-                                                href="#"
-                                                className="font-medium text-2xl ml-3 text-red-500 hover:text-white"
-                                            >
-                                                <i className="ri-delete-bin-6-line"></i>
-                                            </a>
-                                            <a
-                                                href="#"
                                                 className="font-medium text-2xl ml-3 text-green-500 hover:text-white"
                                             >
                                                 <i className="ri-eye-line"></i>
                                             </a>
+                                            <a
+                                                href="#"
+                                                className="font-medium text-2xl ml-3 text-blue-500 hover:text-white"
+                                            >
+                                                <i className="ri-pencil-line"></i>
+                                            </a>
+                                            {
+                                                // if status is draft
+                                                item.publish == 1 && (
+                                                    <a
+                                                        href="#"
+                                                        className="font-medium text-2xl ml-3 text-red-500 hover:text-white"
+                                                    >
+                                                        <i className="ri-delete-bin-6-line"></i>
+                                                    </a>
+                                                )
+                                            }
                                         </td>
                                     </tr>
                                 ))}

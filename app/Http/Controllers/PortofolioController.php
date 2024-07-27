@@ -103,12 +103,12 @@ class PortofolioController extends Controller
         // Validate the request
         $validatedData = $request->validate([
             'title' => 'required|string|max:255',
-            'banner' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'banner' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg',
             'content' => 'required|string',
             'category' => 'required|exists:categories,id',
             "lang_images" => 'nullable|string',
             'gallery' => 'nullable|array',
-            'gallery.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'gallery.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg',
         ]);
 
         // Handle banner upload

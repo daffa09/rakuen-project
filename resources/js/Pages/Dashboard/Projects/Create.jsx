@@ -177,7 +177,7 @@ export default function Index({ auth }) {
                                         >
                                             https://devicon.dev/
                                         </a>
-                                        ) [hint: implode by coma]
+                                        ) [hint: seperate by coma]
                                     </span>
                                 </label>
                                 <input
