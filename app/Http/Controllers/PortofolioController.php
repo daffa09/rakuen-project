@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Projects;
 use App\Models\Images;
 use App\Models\Gallery;
+use App\Models\LangImages;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -17,7 +18,7 @@ class PortofolioController extends Controller
     {
         $query = Projects::query()
             ->leftJoin('categories', 'projects.category_id', '=', 'categories.id')
-            ->leftJoin('lang_images', 'projects.id', '=', 'lang_images.projects_id')
+            ->leftJoin('lang_images', 'projects.id', '=', 'lang_images.project_id')
             ->selectRaw('projects.id, projects.title, projects.banner, projects.content, projects.publish, projects.created_at, projects.updated_at, projects.category_id, MAX(categories.name) as category_name, GROUP_CONCAT(lang_images.url) as lang_urls')
             ->where('projects.publish', '1')
             ->groupBy('projects.id', 'projects.title', 'projects.banner', 'projects.content', 'projects.publish', 'projects.created_at', 'projects.updated_at', 'projects.category_id')
@@ -41,7 +42,7 @@ class PortofolioController extends Controller
     {
         $query = Projects::query()
             ->leftJoin('categories', 'projects.category_id', '=', 'categories.id')
-            ->leftJoin('lang_images', 'projects.id', '=', 'lang_images.projects_id')
+            ->leftJoin('lang_images', 'projects.id', '=', 'lang_images.project_id')
             ->selectRaw('projects.id, projects.title, projects.banner, projects.content, projects.publish, projects.created_at, projects.updated_at, projects.category_id, MAX(categories.name) as category_name, GROUP_CONCAT(lang_images.url) as lang_urls')
             ->groupBy('projects.id', 'projects.title', 'projects.banner', 'projects.content', 'projects.publish', 'projects.created_at', 'projects.updated_at', 'projects.category_id')
             ->orderBy('projects.created_at')
@@ -105,6 +106,7 @@ class PortofolioController extends Controller
             'banner' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'content' => 'required|string',
             'category' => 'required|exists:categories,id',
+            "lang_images" => 'nullable|string',
             'gallery' => 'nullable|array',
             'gallery.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
@@ -122,6 +124,8 @@ class PortofolioController extends Controller
             }
         }
 
+        // explode lang_images from coma
+        $lang_images = explode(',', $validatedData['lang_images']);
 
         // Create the project
         $project = new Projects();
@@ -138,7 +142,7 @@ class PortofolioController extends Controller
         // create image for banner
         $image = new Images();
         $image->id = (string) \Illuminate\Support\Str::uuid();
-        $image->id_project = $project->id;
+        $image->project_id = $project->id;
         $image->image_url = $project->banner;
         $image->created_by = auth()->id();
         $image->created_at = now();
@@ -149,10 +153,23 @@ class PortofolioController extends Controller
             foreach ($galleryPaths as $path) {
                 $gallery = new Gallery();
                 $gallery->id = (string) \Illuminate\Support\Str::uuid();
-                $gallery->id_project = $project->id;
+                $gallery->project_id = $project->id;
                 $gallery->image_url = $path;
                 $gallery->created_by = auth()->id();
                 $gallery->save();
+            }
+        }
+
+        // save to lang images
+        if (!empty($lang_images)) {
+            foreach ($lang_images as $path) {
+                $lang_image = new LangImages();
+                $lang_image->id = (string) \Illuminate\Support\Str::uuid();
+                $lang_image->project_id = $project->id;
+                $lang_image->url = $path;
+                $lang_image->created_by = auth()->id();
+                $lang_image->created_at = now();
+                $lang_image->save();
             }
         }
 

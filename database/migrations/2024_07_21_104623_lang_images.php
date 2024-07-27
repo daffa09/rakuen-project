@@ -14,9 +14,8 @@ return new class extends Migration
         Schema::disableForeignKeyConstraints();
 
         Schema::create('lang_images', function (Blueprint $table) {
-            $table->id();
-            $table->foreignUuid('projects_id')->constrained('projects')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->string('name');
+            $table->uuid("id")->primary();
+            $table->foreignUuid('project_id')->constrained('projects')->cascadeOnDelete()->cascadeOnUpdate();
             $table->string('url');
             $table->string('created_by');
             $table->string('updated_by')->nullable();

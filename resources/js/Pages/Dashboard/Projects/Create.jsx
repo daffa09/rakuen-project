@@ -5,11 +5,12 @@ import { Head } from "@inertiajs/react";
 import Editor from "@/Components/Editor";
 
 export default function Index({ auth }) {
-    const { data, setData, post, progress } = useForm({
+    const { data, setData, post, lang_images } = useForm({
         title: "",
         banner: null,
         content: "",
         category: "",
+        lang_images: "",
         gallery: [],
     });
 
@@ -160,6 +161,36 @@ export default function Index({ auth }) {
                                         </option>
                                     ))}
                                 </select>
+                            </div>
+                            <div className="mb-4">
+                                <label
+                                    htmlFor="lang_images"
+                                    className="block text-xl font-medium"
+                                >
+                                    Languange Logo{" "}
+                                    <span className="text-sm">
+                                        (copy from{" "}
+                                        <a
+                                            href="https://devicon.dev/"
+                                            target="_blank"
+                                            className="underline text-blue-500 hover:to-blue-700"
+                                        >
+                                            https://devicon.dev/
+                                        </a>
+                                        ) [hint: implode by coma]
+                                    </span>
+                                </label>
+                                <input
+                                    type="text"
+                                    placeholder="devicon-html5-plain, devicon-javascript-plain"
+                                    name="lang_images"
+                                    id="lang_images"
+                                    value={data.lang_images}
+                                    onChange={(e) =>
+                                        setData("lang_images", e.target.value)
+                                    }
+                                    className="mt-1 text-black focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                />
                             </div>
                             <div className="mb-4">
                                 <label

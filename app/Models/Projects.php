@@ -27,7 +27,7 @@ class Projects extends Model
 
     public function image()
     {
-        return $this->hasMany(Images::class, 'id', 'id_project');
+        return $this->hasMany(Images::class, 'id', 'project_id');
     }
 
     public function category()
@@ -37,6 +37,6 @@ class Projects extends Model
 
     public function gallery()
     {
-        return $this->hasMany(Gallery::class, 'id', 'id_project');
+        return $this->hasMany(Gallery::class, 'id', 'project_id');
     }
 }

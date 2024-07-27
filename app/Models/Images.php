@@ -11,7 +11,7 @@ class Images extends Model
 
     protected $fillable = [
         'id',
-        'id_project',
+        'project_id',
         'image_url',
         'created_by',
         "created_at",
@@ -21,6 +21,6 @@ class Images extends Model
 
     public function project()
     {
-        return $this->belongsTo(Projects::class, 'id_project', 'id');
+        return $this->belongsTo(Projects::class, 'project_id', 'id');
     }
 }
