@@ -95,7 +95,13 @@ export default function Index(props) {
                                         <td className="px-6 py-4 text-right">
                                             <a
                                                 href="#"
-                                                className="font-medium text-2xl text-blue-500 hover:text-white"
+                                                className="font-medium text-2xl ml-3 text-green-500 hover:text-white"
+                                            >
+                                                <i className="ri-eye-line"></i>
+                                            </a>
+                                            <a
+                                                href="#"
+                                                className="font-medium text-2xl ml-3 text-blue-500 hover:text-white"
                                             >
                                                 <i className="ri-pencil-line"></i>
                                             </a>

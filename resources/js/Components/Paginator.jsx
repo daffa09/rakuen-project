@@ -1,8 +1,8 @@
 import { Link } from "@inertiajs/react";
 
 const Paginator = ({ meta }) => {
-    if (!meta || !meta.links) {
-        return null;
+    if (!meta || !meta.links || meta.data.length === 0) {
+        return null; // Tidak menampilkan pagination jika tidak ada data
     }
 
     const prev = meta.links[0].url;

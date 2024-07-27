@@ -25,8 +25,10 @@ class PortofolioController extends Controller
             ->orderBy('projects.created_at')
             ->paginate(5);
 
-        // Memisahkan string 'lang_urls' menjadi array
+        // Transform the collection to ensure 'lang_urls' is an array
         $query->getCollection()->transform(function ($project) {
+            // Assuming the image URLs are relative and stored in the 'storage' directory
+            $project->banner = asset('storage/' . $project->banner); // Adjust this if necessary
             $project->lang_urls = $project->lang_urls ? explode(',', $project->lang_urls) : [];
             return $project;
         });
@@ -52,9 +54,7 @@ class PortofolioController extends Controller
         $query->getCollection()->transform(function ($project) {
             // Assuming the image URLs are relative and stored in the 'storage' directory
             $project->banner = asset('storage/' . $project->banner); // Adjust this if necessary
-            $project->lang_urls = $project->lang_urls ? array_map(function ($url) {
-                return asset('storage/' . $url); // Adjust this if necessary
-            }, explode(',', $project->lang_urls)) : [];
+            $project->lang_urls = $project->lang_urls ? explode(',', $project->lang_urls) : [];
             return $project;
         });
 
