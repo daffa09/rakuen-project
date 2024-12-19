@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ArticlesController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HomepageController;
 use App\Http\Controllers\PortofolioController;
 use App\Http\Controllers\ProfileController;
@@ -14,14 +15,26 @@ Route::get('/portofolio/all', [PortofolioController::class, 'allProject'])->name
 Route::get('/articles', [ArticlesController::class, 'index'])->name('articles');
 Route::get('/contact', [HomepageController::class, 'contact'])->name('contact');
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware('auth')->group(function () {
+Route::middleware('auth', 'verified')->group(function () {
+    Route::get('/dashboard', function () {
+        return Inertia::render('Dashboard/Index', [
+            'title' => 'Dashboard',
+            'active' => 'Dashboard',
+        ]);
+    })->name('dashboard');
+
+    // profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    // projects
+    Route::get('/projects', [PortofolioController::class, 'indexDashboard'])->name('projects.indexDashboard');
+    Route::get('/projects/create', [PortofolioController::class, 'create'])->name('projects.create');
+    Route::post('/projects', [PortofolioController::class, 'store'])->name('projects.store');
+
+    // category
+    Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
 });
 
 require __DIR__ . '/auth.php';

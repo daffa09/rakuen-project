@@ -15,6 +15,6 @@ class LangImages extends Model
 
     public function projects()
     {
-        return $this->hasMany(Projects::class, 'projects_id', 'id');
+        return $this->hasMany(Projects::class, 'project_id', 'id');
     }
 }

@@ -22,7 +22,7 @@ class ImagesFactory extends Factory
         $project = Projects::factory()->create();
         return [
             'id' => $this->faker->uuid(),
-            'id_project' => $project->id,
+            'project_id' => $project->id,
             'image_url' => $this->faker->imageUrl(),
             'created_by' => 'Test User',
         ];
