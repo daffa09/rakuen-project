@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { useForm } from "@inertiajs/react";
+import { Head, useForm } from "@inertiajs/react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head } from "@inertiajs/react";
 import Editor from "@/Components/Editor";
 
-export default function Index({ auth }) {
-    const { data, setData, post, lang_images } = useForm({
+export default function Index({ editData, auth }) {
+    const { data, setData, post, put } = useForm({
         title: "",
         banner: null,
         content: "",
@@ -20,6 +19,16 @@ export default function Index({ auth }) {
 
     useEffect(() => {
         fetchCategories();
+        if (editData.id) {
+            data.content = editData.content;
+            data.title = editData.title;
+            data.category = editData.category_id;
+            data.lang_images = editData.lang_urls;
+            data.banner = editData.banner;
+            data.gallery = editData.gallery;
+            setBannerPreview(editData.banner);
+            setGalleryPreview(editData.gallery);
+        }
     }, []);
 
     const handleBannerChange = (event) => {
@@ -62,17 +71,21 @@ export default function Index({ auth }) {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        post(route("projects.store"));
+        if (editData.id) {
+            post(route("projects.update", editData.id));
+        } else {
+            post(route("projects.store"));
+        }
     };
 
     return (
         <AuthenticatedLayout user={auth.user}>
-            <Head title="Create Projects" />
+            <Head title={editData.id ? "Edit Project" : "Create Project"} />
 
             <div className="py-12">
                 <div className="mx-auto" style={{ width: "80%" }}>
                     <h1 className="text-5xl font-semibold pb-10 text-center">
-                        Create Projects
+                        {editData.id ? "Edit Project" : "Create Project"}
                     </h1>
                     <div className="w-9/12 mx-auto">
                         <form
@@ -233,7 +246,9 @@ export default function Index({ auth }) {
                                     type="submit"
                                     className="bg-indigo-500 text-white px-4 py-2 rounded-md"
                                 >
-                                    Create Project
+                                    {editData.id
+                                        ? "Edit Project"
+                                        : "Create Project"}
                                 </button>
                             </div>
                         </form>

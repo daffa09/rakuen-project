@@ -14,8 +14,7 @@ class PortofolioController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
+    public function index() {
         $query = Projects::query()
             ->leftJoin('categories', 'projects.category_id', '=', 'categories.id')
             ->leftJoin('lang_images', 'projects.id', '=', 'lang_images.project_id')
@@ -40,8 +39,7 @@ class PortofolioController extends Controller
         ]);
     }
 
-    public function indexDashboard()
-    {
+    public function indexDashboard() {
         $query = Projects::query()
             ->leftJoin('categories', 'projects.category_id', '=', 'categories.id')
             ->leftJoin('lang_images', 'projects.id', '=', 'lang_images.project_id')
@@ -65,10 +63,7 @@ class PortofolioController extends Controller
         ]);
     }
 
-
-
-    public function allProject(Request $request)
-    {
+    public function allProject(Request $request) {
         $query = Projects::query();
 
         // if ($search = $request->input('search')) {
@@ -81,9 +76,6 @@ class PortofolioController extends Controller
         return response()->json($paginator);
     }
 
-
-
-
     /**
      * Show the form for creating a new resource.
      */
@@ -92,6 +84,7 @@ class PortofolioController extends Controller
         return Inertia::render('Dashboard/Projects/Create', [
             'title' => 'Projects',
             'active' => 'Projects',
+            'editData' => ""
         ]);
     }
 
@@ -126,6 +119,7 @@ class PortofolioController extends Controller
 
         // explode lang_images from coma
         $lang_images = explode(',', $validatedData['lang_images']);
+
 
         // Create the project
         $project = new Projects();
@@ -190,7 +184,54 @@ class PortofolioController extends Controller
      */
     public function edit(string $id)
     {
-        //
+
+        // get the data
+        $project = Projects::query()
+            ->leftJoin('categories', 'projects.category_id', '=', 'categories.id')
+            ->selectRaw('
+                projects.id,
+                projects.title,
+                projects.banner,
+                projects.content,
+                projects.publish,
+                projects.created_at,
+                projects.updated_at,
+                projects.category_id,
+                MAX(categories.name) as category_name,
+                (
+                    SELECT GROUP_CONCAT(lang_images.url)
+                    FROM lang_images
+                    WHERE lang_images.project_id = projects.id
+                ) as lang_urls,
+                (
+                    SELECT GROUP_CONCAT(gallery.image_url)
+                    FROM gallery
+                    WHERE gallery.project_id = projects.id
+                ) as gallery
+            ')
+            ->where('projects.id', $id)
+            ->groupBy([
+                'projects.id',
+                'projects.title',
+                'projects.banner',
+                'projects.content',
+                'projects.publish',
+                'projects.created_at',
+                'projects.updated_at',
+                'projects.category_id',
+                'categories.name'
+            ])
+            ->first();
+
+        $project->banner = asset('storage/' . $project->banner);
+        $project->lang_urls = $project->lang_urls ? explode(',', $project->lang_urls) : [];
+        $project->gallery = $project->gallery ? array_map(fn($item) => asset('storage/' . $item), explode(',', $project->gallery)) : [];
+
+        return Inertia::render('Dashboard/Projects/Create', [
+            'title' => 'Projects',
+            'active' => 'Projects',
+            'editData' => $project
+        ]);
     }
 
     /**
@@ -198,7 +239,91 @@ class PortofolioController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        dd($request->all());
+        // Validate the request
+        $validatedData = $request->validate([
+            'title' => 'required|string|max:255',
+            'banner' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg',
+            'content' => 'required|string',
+            'category' => 'required|exists:categories,id',
+            "lang_images" => 'nullable|string',
+            'gallery' => 'nullable|array',
+            'gallery.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg',
+        ]);
+
+        // Handle banner upload
+        if ($request->hasFile('banner')) {
+            $validatedData['banner'] = $request->file('banner')->store('banners', 'public');
+        }
+
+        // Handle gallery upload
+        $galleryPaths = [];
+        if ($request->hasFile('gallery')) {
+            foreach ($request->file('gallery') as $file) {
+                $galleryPaths[] = $file->store('galleries', 'public');
+            }
+        }
+
+
+        // explode lang_images from coma
+        $lang_images = explode(',', $validatedData['lang_images']);
+
+
+        // Create the project
+        $project = new Projects();
+        $project->id = (string) \Illuminate\Support\Str::uuid();
+        $project->title = $validatedData['title'];
+        $project->banner = $validatedData['banner'] ?? null;
+        $project->content = $validatedData['content'];
+        $project->category_id = $validatedData['category'];
+        $project->publish = 0;
+        $project->created_by = auth()->id();
+        $project->created_at = now();
+        $project->save();
+
+        // cek banner image
+        if ($request->hasFile('banner')) {
+            $image = Images::where('project_id', $id)->first();
+            if ($image) {
+                $image = new Images();
+                $image->id = (string) \Illuminate\Support\Str::uuid();
+                $image->project_id = $project->id;
+                $image->image_url = $project->banner;
+                $image->created_by = auth()->id();
+                $image->created_at = now();
+                $image->save();
+            }
+        }
+
+        // Save gallery images
+        if (!empty($galleryPaths)) {
+            foreach ($galleryPaths as $path) {
+                if (!$gallery = Gallery::where('project_id', $id)->first()) {
+                    $gallery = new Gallery();
+                    $gallery->id = (string) \Illuminate\Support\Str::uuid();
+                    $gallery->project_id = $project->id;
+                    $gallery->image_url = $path;
+                    $gallery->created_by = auth()->id();
+                    $gallery->save();
+                }
+            }
+        }
+
+        // save to lang images
+        if (!empty($lang_images)) {
+            foreach ($lang_images as $path) {
+                $lang_image = new LangImages();
+                $lang_image->id = (string) \Illuminate\Support\Str::uuid();
+                $lang_image->project_id = $project->id;
+                $lang_image->url = $path;
+                $lang_image->created_by = auth()->id();
+                $lang_image->created_at = now();
+                $lang_image->save();
+            }
+        }
+
+        // Redirect or return a response
+        return redirect()->route('projects.indexDashboard')->with('success', 'Project created successfully');
     }
 
     /**

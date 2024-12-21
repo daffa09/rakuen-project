@@ -1,13 +1,11 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head } from "@inertiajs/react";
+import { Head, Link } from "@inertiajs/react";
 import Paginator from "@/Components/Paginator";
 
 export default function Index(props) {
     const { auth } = props; // Ekstraksi auth dari props
     const data = props.data.data;
     const meta = props.data;
-
-    console.log(data);
 
     return (
         <AuthenticatedLayout user={auth.user}>
@@ -59,7 +57,7 @@ export default function Index(props) {
                                 {data.map((item, index) => (
                                     <tr
                                         className=" border bg-gray-900 border-gray-500 hover:bg-gray-600 text-justify"
-                                        key={index}
+                                        key={item.id}
                                     >
                                         <th
                                             scope="row"
@@ -101,12 +99,14 @@ export default function Index(props) {
                                             >
                                                 <i className="ri-eye-line"></i>
                                             </a>
-                                            <a
-                                                href="#"
+                                            <Link
+                                                href={`/projects/edit/${item.id}`}
+                                                method="get"
                                                 className="font-medium text-2xl ml-3 text-blue-500 hover:text-white"
                                             >
                                                 <i className="ri-pencil-line"></i>
-                                            </a>
+                                            </Link>
+
                                             {
                                                 // if status is draft
                                                 item.publish == 1 && (

@@ -28,10 +28,13 @@ Route::middleware('auth', 'verified')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
     // projects
     Route::get('/projects', [PortofolioController::class, 'indexDashboard'])->name('projects.indexDashboard');
     Route::get('/projects/create', [PortofolioController::class, 'create'])->name('projects.create');
     Route::post('/projects', [PortofolioController::class, 'store'])->name('projects.store');
+    Route::get('/projects/edit/{id}', [PortofolioController::class, 'edit'])->name('projects.edit');
+    Route::post('/projects/edit', [PortofolioController::class, 'update'])->name('projects.update');
 
     // category
     Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
