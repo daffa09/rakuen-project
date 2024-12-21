@@ -45,7 +45,7 @@ class PortofolioController extends Controller
             ->leftJoin('lang_images', 'projects.id', '=', 'lang_images.project_id')
             ->selectRaw('projects.id, projects.title, projects.banner, projects.content, projects.publish, projects.created_at, projects.updated_at, projects.category_id, MAX(categories.name) as category_name, GROUP_CONCAT(lang_images.url) as lang_urls')
             ->groupBy('projects.id', 'projects.title', 'projects.banner', 'projects.content', 'projects.publish', 'projects.created_at', 'projects.updated_at', 'projects.category_id')
-            ->orderBy('projects.created_at')
+            ->orderBy('projects.created_at', 'desc')
             ->paginate(10);
 
         // Transform the collection to ensure 'lang_urls' is an array
@@ -91,8 +91,7 @@ class PortofolioController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         // Validate the request
         $validatedData = $request->validate([
             'title' => 'required|string|max:255',
@@ -182,9 +181,7 @@ class PortofolioController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
-    {
-
+    public function edit(string $id) {
         // get the data
         $project = Projects::query()
             ->leftJoin('categories', 'projects.category_id', '=', 'categories.id')
@@ -224,7 +221,6 @@ class PortofolioController extends Controller
             ->first();
 
         $project->banner = asset('storage/' . $project->banner);
-        $project->lang_urls = $project->lang_urls ? explode(',', $project->lang_urls) : [];
         $project->gallery = $project->gallery ? array_map(fn($item) => asset('storage/' . $item), explode(',', $project->gallery)) : [];
 
         return Inertia::render('Dashboard/Projects/Create', [
@@ -237,9 +233,7 @@ class PortofolioController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
-    {
-        dd($request->all());
+    public function update(Request $request, string $id) {
         // Validate the request
         $validatedData = $request->validate([
             'title' => 'required|string|max:255',
@@ -247,8 +241,7 @@ class PortofolioController extends Controller
             'content' => 'required|string',
             'category' => 'required|exists:categories,id',
             "lang_images" => 'nullable|string',
-            'gallery' => 'nullable|array',
-            'gallery.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg',
+            'gallery' => 'nullable|array'
         ]);
 
         // Handle banner upload
@@ -264,21 +257,17 @@ class PortofolioController extends Controller
             }
         }
 
-
         // explode lang_images from coma
         $lang_images = explode(',', $validatedData['lang_images']);
 
-
-        // Create the project
-        $project = new Projects();
-        $project->id = (string) \Illuminate\Support\Str::uuid();
+        // update the project
+        $project = Projects::find($id);
         $project->title = $validatedData['title'];
-        $project->banner = $validatedData['banner'] ?? null;
+        $project->banner = $validatedData['banner'];
         $project->content = $validatedData['content'];
         $project->category_id = $validatedData['category'];
-        $project->publish = 0;
-        $project->created_by = auth()->id();
-        $project->created_at = now();
+        $project->updated_by = auth()->id();
+        $project->updated_at = now();
         $project->save();
 
         // cek banner image
@@ -298,7 +287,7 @@ class PortofolioController extends Controller
         // Save gallery images
         if (!empty($galleryPaths)) {
             foreach ($galleryPaths as $path) {
-                if (!$gallery = Gallery::where('project_id', $id)->first()) {
+                if (!Gallery::where('project_id', $id)->first()) {
                     $gallery = new Gallery();
                     $gallery->id = (string) \Illuminate\Support\Str::uuid();
                     $gallery->project_id = $project->id;
@@ -312,13 +301,15 @@ class PortofolioController extends Controller
         // save to lang images
         if (!empty($lang_images)) {
             foreach ($lang_images as $path) {
-                $lang_image = new LangImages();
-                $lang_image->id = (string) \Illuminate\Support\Str::uuid();
-                $lang_image->project_id = $project->id;
-                $lang_image->url = $path;
-                $lang_image->created_by = auth()->id();
-                $lang_image->created_at = now();
-                $lang_image->save();
+                if (!LangImages::where('project_id', $id)->first()) {
+                    $lang_image = new LangImages();
+                    $lang_image->id = (string) \Illuminate\Support\Str::uuid();
+                    $lang_image->project_id = $project->id;
+                    $lang_image->url = $path;
+                    $lang_image->created_by = auth()->id();
+                    $lang_image->created_at = now();
+                    $lang_image->save();
+                }
             }
         }
 
