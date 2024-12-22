@@ -24,10 +24,8 @@ class PortofolioController extends Controller
             ->orderBy('projects.created_at')
             ->paginate(5);
 
-        // Transform the collection to ensure 'lang_urls' is an array
         $query->getCollection()->transform(function ($project) {
-            // Assuming the image URLs are relative and stored in the 'storage' directory
-            $project->banner = asset('storage/' . $project->banner); // Adjust this if necessary
+            $project->banner = asset('storage/' . $project->banner);
             $project->lang_urls = $project->lang_urls ? explode(',', $project->lang_urls) : [];
             return $project;
         });
@@ -325,6 +323,9 @@ class PortofolioController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $project = Projects::find($id);
+        $project->delete();
+
+        return redirect()->route('projects.indexDashboard')->with('success', 'Project deleted successfully');
     }
 }

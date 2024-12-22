@@ -35,6 +35,7 @@ Route::middleware('auth', 'verified')->group(function () {
     Route::post('/projects', [PortofolioController::class, 'store'])->name('projects.store');
     Route::get('/projects/edit/{id}', [PortofolioController::class, 'edit'])->name('projects.edit');
     Route::put('/projects/edit/{id}', [PortofolioController::class, 'update'])->name('projects.update');
+    Route::delete('/projects/delete/{id}', [PortofolioController::class, 'destroy'])->name('projects.destroy');
 
     // category
     Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
