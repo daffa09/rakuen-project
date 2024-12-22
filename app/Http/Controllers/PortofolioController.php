@@ -234,10 +234,10 @@ class PortofolioController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id) {
+
         // Validate the request
         $validatedData = $request->validate([
             'title' => 'required|string|max:255',
-            'banner' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg',
             'content' => 'required|string',
             'category' => 'required|exists:categories,id',
             "lang_images" => 'nullable|string',
@@ -247,6 +247,9 @@ class PortofolioController extends Controller
         // Handle banner upload
         if ($request->hasFile('banner')) {
             $validatedData['banner'] = $request->file('banner')->store('banners', 'public');
+        } else {
+            $filename = strstr($request->input('banner'), 'banners/');
+            $validatedData['banner'] = $filename;
         }
 
         // Handle gallery upload

@@ -18,7 +18,7 @@ class HomepageController extends Controller
             ->leftJoin('categories', 'projects.category_id', '=', 'categories.id')
             ->leftJoin('lang_images', 'projects.id', '=', 'lang_images.project_id')
             ->selectRaw('projects.id, projects.title, projects.banner, projects.content, projects.publish, projects.created_at, projects.updated_at, projects.category_id, MAX(categories.name) as category_name, GROUP_CONCAT(lang_images.url) as lang_urls')
-            ->where('projects.publish', '0')
+            ->where('projects.publish', '1')
             ->groupBy('projects.id', 'projects.title', 'projects.banner', 'projects.content', 'projects.publish', 'projects.created_at', 'projects.updated_at', 'projects.category_id')
             ->orderBy('projects.created_at')
             ->paginate(3);

@@ -69,12 +69,18 @@ export default function Index({ editData, auth }) {
         }
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        if (editData.id) {
-            post(route("projects.update", editData.id));
-        } else {
-            post(route("projects.store"));
+        try {
+            if (editData.id) {
+                put(route("projects.update", editData.id));
+            } else {
+                post(route("projects.store"));
+            }
+        } catch (error) {
+            if (error.response && error.response.status === 422) {
+                setErrors(error.response.data.errors);
+            }
         }
     };
 
@@ -109,6 +115,10 @@ export default function Index({ editData, auth }) {
                                     }
                                     className="mt-1 text-black focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                                 />
+                                {/* error show */}
+                                <p className="text-red-500 text-xs italic">
+                                    {/* {errors.title} */}
+                                </p>
                             </div>
                             <div className="mb-4">
                                 <label
