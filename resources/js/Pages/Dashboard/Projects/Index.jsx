@@ -94,7 +94,7 @@ export default function Index(props) {
                                                 className="w-2/3 mx-auto rounded-lg"
                                             />
                                         </td>
-                                        <td className="px-6 py-4 text-xl font-semibold">
+                                        <td className="px-6 py-4 text-xl font-semibold w-1/3 text-center">
                                             {item.title}
                                         </td>
                                         <td className="px-6 py-4 text-lg font-thin">
