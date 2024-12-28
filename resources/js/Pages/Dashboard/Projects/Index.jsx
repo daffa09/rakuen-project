@@ -118,7 +118,8 @@ export default function Index(props) {
                                             style={{ width: "200px" }}
                                         >
                                             <Link
-                                                href="#"
+                                                href={`/projects/show/${item.id}`}
+                                                method="get"
                                                 className="font-medium text-2xl ml-3 text-green-500 hover:text-white"
                                             >
                                                 <i className="ri-eye-line"></i>

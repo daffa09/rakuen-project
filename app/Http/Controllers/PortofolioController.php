@@ -171,9 +171,52 @@ class PortofolioController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
-        //
+    public function show(string $id) {
+         $project = Projects::query()
+            ->leftJoin('categories', 'projects.category_id', '=', 'categories.id')
+            ->selectRaw('
+                projects.id,
+                projects.title,
+                projects.banner,
+                projects.content,
+                projects.publish,
+                projects.created_at,
+                projects.updated_at,
+                projects.category_id,
+                MAX(categories.name) as category_name,
+                (
+                    SELECT GROUP_CONCAT(lang_images.url)
+                    FROM lang_images
+                    WHERE lang_images.project_id = projects.id
+                ) as lang_urls,
+                (
+                    SELECT GROUP_CONCAT(gallery.image_url)
+                    FROM gallery
+                    WHERE gallery.project_id = projects.id
+                ) as gallery
+            ')
+            ->where('projects.id', $id)
+            ->groupBy([
+                'projects.id',
+                'projects.title',
+                'projects.banner',
+                'projects.content',
+                'projects.publish',
+                'projects.created_at',
+                'projects.updated_at',
+                'projects.category_id',
+                'categories.name'
+            ])
+            ->first();
+
+        $project->banner = asset('storage/' . $project->banner);
+        $project->gallery = $project->gallery ? array_map(fn($item) => asset('storage/' . $item), explode(',', $project->gallery)) : [];
+
+        return Inertia::render('Dashboard/Projects/Show', [
+            'title' => 'Projects',
+            'active' => 'Projects',
+            'data' => $project
+        ]);
     }
 
     /**
@@ -316,6 +359,14 @@ class PortofolioController extends Controller
 
         // Redirect or return a response
         return redirect()->route('projects.indexDashboard')->with('success', 'Project created successfully');
+    }
+
+    public function publish(string $id) {
+        $project = Projects::find($id);
+        $project->publish = 1;
+        $project->save();
+
+        return redirect()->route('projects.indexDashboard')->with('success', 'Project published successfully');
     }
 
     /**
