@@ -14,8 +14,7 @@ class PortofolioController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
+    public function index() {
         $query = Projects::query()
             ->leftJoin('categories', 'projects.category_id', '=', 'categories.id')
             ->leftJoin('lang_images', 'projects.id', '=', 'lang_images.project_id')
@@ -25,10 +24,8 @@ class PortofolioController extends Controller
             ->orderBy('projects.created_at')
             ->paginate(5);
 
-        // Transform the collection to ensure 'lang_urls' is an array
         $query->getCollection()->transform(function ($project) {
-            // Assuming the image URLs are relative and stored in the 'storage' directory
-            $project->banner = asset('storage/' . $project->banner); // Adjust this if necessary
+            $project->banner = asset('storage/' . $project->banner);
             $project->lang_urls = $project->lang_urls ? explode(',', $project->lang_urls) : [];
             return $project;
         });
@@ -40,14 +37,13 @@ class PortofolioController extends Controller
         ]);
     }
 
-    public function indexDashboard()
-    {
+    public function indexDashboard() {
         $query = Projects::query()
             ->leftJoin('categories', 'projects.category_id', '=', 'categories.id')
             ->leftJoin('lang_images', 'projects.id', '=', 'lang_images.project_id')
             ->selectRaw('projects.id, projects.title, projects.banner, projects.content, projects.publish, projects.created_at, projects.updated_at, projects.category_id, MAX(categories.name) as category_name, GROUP_CONCAT(lang_images.url) as lang_urls')
             ->groupBy('projects.id', 'projects.title', 'projects.banner', 'projects.content', 'projects.publish', 'projects.created_at', 'projects.updated_at', 'projects.category_id')
-            ->orderBy('projects.created_at')
+            ->orderBy('projects.created_at', 'desc')
             ->paginate(10);
 
         // Transform the collection to ensure 'lang_urls' is an array
@@ -65,10 +61,7 @@ class PortofolioController extends Controller
         ]);
     }
 
-
-
-    public function allProject(Request $request)
-    {
+    public function allProject(Request $request) {
         $query = Projects::query();
 
         // if ($search = $request->input('search')) {
@@ -81,9 +74,6 @@ class PortofolioController extends Controller
         return response()->json($paginator);
     }
 
-
-
-
     /**
      * Show the form for creating a new resource.
      */
@@ -92,14 +82,14 @@ class PortofolioController extends Controller
         return Inertia::render('Dashboard/Projects/Create', [
             'title' => 'Projects',
             'active' => 'Projects',
+            'editData' => ""
         ]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         // Validate the request
         $validatedData = $request->validate([
             'title' => 'required|string|max:255',
@@ -126,6 +116,7 @@ class PortofolioController extends Controller
 
         // explode lang_images from coma
         $lang_images = explode(',', $validatedData['lang_images']);
+
 
         // Create the project
         $project = new Projects();
@@ -180,25 +171,211 @@ class PortofolioController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
-        //
+    public function show(string $id) {
+         $project = Projects::query()
+            ->leftJoin('categories', 'projects.category_id', '=', 'categories.id')
+            ->selectRaw('
+                projects.id,
+                projects.title,
+                projects.banner,
+                projects.content,
+                projects.publish,
+                projects.created_at,
+                projects.updated_at,
+                projects.category_id,
+                MAX(categories.name) as category_name,
+                (
+                    SELECT GROUP_CONCAT(lang_images.url)
+                    FROM lang_images
+                    WHERE lang_images.project_id = projects.id
+                ) as lang_urls,
+                (
+                    SELECT GROUP_CONCAT(gallery.image_url)
+                    FROM gallery
+                    WHERE gallery.project_id = projects.id
+                ) as gallery
+            ')
+            ->where('projects.id', $id)
+            ->groupBy([
+                'projects.id',
+                'projects.title',
+                'projects.banner',
+                'projects.content',
+                'projects.publish',
+                'projects.created_at',
+                'projects.updated_at',
+                'projects.category_id',
+                'categories.name'
+            ])
+            ->first();
+
+        $project->banner = asset('storage/' . $project->banner);
+        $project->lang_urls = $project->lang_urls ? explode(',', $project->lang_urls) : [];
+        $project->gallery = $project->gallery ? array_map(fn($item) => asset('storage/' . $item), explode(',', $project->gallery)) : [];
+
+        return Inertia::render('Dashboard/Projects/Show', [
+            'title' => 'Projects',
+            'active' => 'Projects',
+            'data' => $project
+        ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
-    {
-        //
+    public function edit(string $id) {
+        // get the data
+        $project = Projects::query()
+            ->leftJoin('categories', 'projects.category_id', '=', 'categories.id')
+            ->selectRaw('
+                projects.id,
+                projects.title,
+                projects.banner,
+                projects.content,
+                projects.publish,
+                projects.created_at,
+                projects.updated_at,
+                projects.category_id,
+                MAX(categories.name) as category_name,
+                (
+                    SELECT GROUP_CONCAT(lang_images.url)
+                    FROM lang_images
+                    WHERE lang_images.project_id = projects.id
+                ) as lang_urls,
+                (
+                    SELECT GROUP_CONCAT(gallery.image_url)
+                    FROM gallery
+                    WHERE gallery.project_id = projects.id
+                ) as gallery
+            ')
+            ->where('projects.id', $id)
+            ->groupBy([
+                'projects.id',
+                'projects.title',
+                'projects.banner',
+                'projects.content',
+                'projects.publish',
+                'projects.created_at',
+                'projects.updated_at',
+                'projects.category_id',
+                'categories.name'
+            ])
+            ->first();
+
+        $project->banner = asset('storage/' . $project->banner);
+        $project->gallery = $project->gallery ? array_map(fn($item) => asset('storage/' . $item), explode(',', $project->gallery)) : [];
+
+        return Inertia::render('Dashboard/Projects/Create', [
+            'title' => 'Projects',
+            'active' => 'Projects',
+            'editData' => $project
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
-    {
-        //
+    public function update(Request $request, string $id) {
+
+        // Validate the request
+        $validatedData = $request->validate([
+            'title' => 'required|string|max:255',
+            'content' => 'required|string',
+            'category' => 'required|exists:categories,id',
+            "lang_images" => 'nullable|string',
+            'gallery' => 'nullable|array'
+        ]);
+
+        // Handle banner upload
+        if ($request->hasFile('banner')) {
+            $validatedData['banner'] = $request->file('banner')->store('banners', 'public');
+        } else {
+            $filename = strstr($request->input('banner'), 'banners/');
+            $validatedData['banner'] = $filename;
+        }
+
+        // Handle gallery upload
+        $galleryPaths = [];
+        if ($request->hasFile('gallery')) {
+            foreach ($request->file('gallery') as $file) {
+                $galleryPaths[] = $file->store('galleries', 'public');
+            }
+        }
+
+        // explode lang_images from coma
+        $lang_images = explode(',', $validatedData['lang_images']);
+
+        // update the project
+        $project = Projects::find($id);
+        $project->title = $validatedData['title'];
+        $project->banner = $validatedData['banner'];
+        $project->content = $validatedData['content'];
+        $project->category_id = $validatedData['category'];
+        $project->updated_by = auth()->id();
+        $project->updated_at = now();
+        $project->save();
+
+        // cek banner image
+        if ($request->hasFile('banner')) {
+            $image = Images::where('project_id', $id)->first();
+            if ($image) {
+                $image = new Images();
+                $image->id = (string) \Illuminate\Support\Str::uuid();
+                $image->project_id = $project->id;
+                $image->image_url = $project->banner;
+                $image->created_by = auth()->id();
+                $image->created_at = now();
+                $image->save();
+            }
+        }
+
+        // Save gallery images
+        if (!empty($galleryPaths)) {
+            foreach ($galleryPaths as $path) {
+                if (!Gallery::where('project_id', $id)->first()) {
+                    $gallery = new Gallery();
+                    $gallery->id = (string) \Illuminate\Support\Str::uuid();
+                    $gallery->project_id = $project->id;
+                    $gallery->image_url = $path;
+                    $gallery->created_by = auth()->id();
+                    $gallery->save();
+                }
+            }
+        }
+
+        // save to lang images
+        if (!empty($lang_images)) {
+            foreach ($lang_images as $path) {
+                if (!LangImages::where('project_id', $id)->first()) {
+                    $lang_image = new LangImages();
+                    $lang_image->id = (string) \Illuminate\Support\Str::uuid();
+                    $lang_image->project_id = $project->id;
+                    $lang_image->url = $path;
+                    $lang_image->created_by = auth()->id();
+                    $lang_image->created_at = now();
+                    $lang_image->save();
+                }
+            }
+        }
+
+        // Redirect or return a response
+        return redirect()->route('projects.indexDashboard')->with('success', 'Project created successfully');
+    }
+
+    public function publish(string $id) {
+        $project = Projects::find($id);
+        $project->publish = 1;
+        $project->save();
+
+        return redirect()->route('projects.indexDashboard')->with('success', 'Project published successfully');
+    }
+
+    public function unpublish(string $id) {
+        $project = Projects::find($id);
+        $project->publish = 0;
+        $project->save();
+
+        return redirect()->route('projects.indexDashboard')->with('success', 'Project unpublished successfully');
     }
 
     /**
@@ -206,6 +383,9 @@ class PortofolioController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $project = Projects::find($id);
+        $project->delete();
+
+        return redirect()->route('projects.indexDashboard')->with('success', 'Project deleted successfully');
     }
 }

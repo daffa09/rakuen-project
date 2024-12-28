@@ -6,7 +6,7 @@ export default function AboutMe() {
                     <img
                         src="/img/me.png"
                         alt="daffa fathan"
-                        className="w-auto h-64 md:h-svh object-cover"
+                        className="w-auto h-64 md:h-max object-cover drop-shadow-xl"
                     />
                 </div>
                 <div className="flex-1 text-black p-4">

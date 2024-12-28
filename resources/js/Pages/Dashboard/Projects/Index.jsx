@@ -1,28 +1,61 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head } from "@inertiajs/react";
+import { useForm, Head, Link } from "@inertiajs/react";
 import Paginator from "@/Components/Paginator";
+import { useState } from "react";
+import ConfirmationDialog from "@/Components/ConfirmationDialog";
 
 export default function Index(props) {
-    const { auth } = props; // Ekstraksi auth dari props
+    const { auth, flash = {} } = props;
     const data = props.data.data;
     const meta = props.data;
 
-    console.log(data);
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [selectedId, setSelectedId] = useState(null);
+
+    const { delete: deleteRequest } = useForm();
+    const { patch: patchRequest } = useForm();
+
+    const handleDelete = (id) => {
+        setSelectedId(id);
+        setIsDialogOpen(true);
+    };
+
+    const handleUnPublish = (id, publish) => {
+        setSelectedId(id);
+        setIsDialogOpen(true);
+    };
+
+    const confirmDelete = () => {
+        if (selectedId) {
+            deleteRequest(`/projects/delete/${selectedId}`);
+        }
+        setIsDialogOpen(false);
+    };
+
+    const confirmUnPublish = () => {
+        if (selectedId) {
+            patchRequest(`/projects/unpublish/${selectedId}`);
+        }
+        setIsDialogOpen(false);
+    };
 
     return (
         <AuthenticatedLayout user={auth.user}>
             <Head title="Projects" />
 
             <div className="py-12">
-                <div
-                    className="mx-auto"
-                    style={{
-                        width: "80%",
-                    }}
-                >
+                <div className="mx-auto" style={{ width: "80%" }}>
                     <h1 className="text-5xl font-semibold pb-10 text-center">
                         Projects List
                     </h1>
+
+                    {/* Tampilkan pesan sukses */}
+                    {flash.success && (
+                        <div className="mb-5 p-4 text-white bg-green-500 rounded-md">
+                            {flash.success}
+                        </div>
+                    )}
+
                     <div className="relative overflow-x-auto shadow-md sm:rounded-lg mb-5">
                         <div className="flex justify-end mb-5">
                             <a
@@ -59,7 +92,7 @@ export default function Index(props) {
                                 {data.map((item, index) => (
                                     <tr
                                         className=" border bg-gray-900 border-gray-500 hover:bg-gray-600 text-justify"
-                                        key={index}
+                                        key={item.id}
                                     >
                                         <th
                                             scope="row"
@@ -74,7 +107,7 @@ export default function Index(props) {
                                                 className="w-2/3 mx-auto rounded-lg"
                                             />
                                         </td>
-                                        <td className="px-6 py-4 text-xl font-semibold">
+                                        <td className="px-6 py-4 text-xl font-semibold w-1/3 text-center">
                                             {item.title}
                                         </td>
                                         <td className="px-6 py-4 text-lg font-thin">
@@ -93,31 +126,51 @@ export default function Index(props) {
                                                     : "Draft"}
                                             </span>
                                         </td>
-
-                                        <td className="px-6 py-4 text-right">
-                                            <a
-                                                href="#"
+                                        <td
+                                            className="px-6 py-4 text-right"
+                                            style={{ width: "200px" }}
+                                        >
+                                            <Link
+                                                href={`/projects/show/${item.id}`}
+                                                method="get"
                                                 className="font-medium text-2xl ml-3 text-green-500 hover:text-white"
                                             >
                                                 <i className="ri-eye-line"></i>
-                                            </a>
-                                            <a
-                                                href="#"
-                                                className="font-medium text-2xl ml-3 text-blue-500 hover:text-white"
-                                            >
-                                                <i className="ri-pencil-line"></i>
-                                            </a>
-                                            {
-                                                // if status is draft
-                                                item.publish == 1 && (
-                                                    <a
-                                                        href="#"
-                                                        className="font-medium text-2xl ml-3 text-red-500 hover:text-white"
+                                            </Link>
+                                            {item.publish !== 1 && (
+                                                <>
+                                                    <Link
+                                                        href={`/projects/edit/${item.id}`}
+                                                        method="get"
+                                                        className="font-medium text-2xl ml-3 text-blue-500 hover:text-white"
                                                     >
-                                                        <i className="ri-delete-bin-6-line"></i>
-                                                    </a>
-                                                )
-                                            }
+                                                        <i className="ri-pencil-line"></i>
+                                                    </Link>
+                                                    <button
+                                                        className="font-medium text-2xl ml-3 text-red-500 hover:text-white"
+                                                        onClick={() =>
+                                                            handleDelete(
+                                                                item.id
+                                                            )
+                                                        }
+                                                    >
+                                                        <i className="ri-delete-bin-line"></i>
+                                                    </button>
+                                                </>
+                                            )}
+                                            {item.publish === 1 && (
+                                                <button
+                                                    className="font-medium text-2xl ml-3 text-red-500 hover:text-white"
+                                                    onClick={() =>
+                                                        handleUnPublish(
+                                                            item.id,
+                                                            item.publish
+                                                        )
+                                                    }
+                                                >
+                                                    <i className="ri-arrow-go-back-fill"></i>
+                                                </button>
+                                            )}
                                         </td>
                                     </tr>
                                 ))}
@@ -127,6 +180,18 @@ export default function Index(props) {
                     <Paginator meta={meta} />
                 </div>
             </div>
+
+            {/* Dialog Konfirmasi */}
+            <ConfirmationDialog
+                isOpen={isDialogOpen}
+                onClose={() => setIsDialogOpen(false)}
+                onConfirm={selectedId ? confirmUnPublish : confirmDelete}
+                message={
+                    selectedId
+                        ? "Are you sure you want to un publish this project?"
+                        : "Are you sure you want to delete this project?"
+                }
+            />
         </AuthenticatedLayout>
     );
 }
