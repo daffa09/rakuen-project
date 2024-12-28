@@ -210,6 +210,7 @@ class PortofolioController extends Controller
             ->first();
 
         $project->banner = asset('storage/' . $project->banner);
+        $project->lang_urls = $project->lang_urls ? explode(',', $project->lang_urls) : [];
         $project->gallery = $project->gallery ? array_map(fn($item) => asset('storage/' . $item), explode(',', $project->gallery)) : [];
 
         return Inertia::render('Dashboard/Projects/Show', [
