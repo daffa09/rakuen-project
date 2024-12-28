@@ -369,6 +369,14 @@ class PortofolioController extends Controller
         return redirect()->route('projects.indexDashboard')->with('success', 'Project published successfully');
     }
 
+    public function unpublish(string $id) {
+        $project = Projects::find($id);
+        $project->publish = 0;
+        $project->save();
+
+        return redirect()->route('projects.indexDashboard')->with('success', 'Project published successfully');
+    }
+
     /**
      * Remove the specified resource from storage.
      */

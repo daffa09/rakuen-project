@@ -4,12 +4,16 @@ import { useState } from "react";
 import ConfirmationDialog from "@/Components/ConfirmationDialog";
 
 export default function Show({ data, auth }) {
+    console.log(data);
+
     const galleryImage = [];
     const { patch: patchRequest } = useForm();
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [selectedId, setSelectedId] = useState(null);
-    const handlePublish = (id) => {
+    const [dataPublish, setDataPublish] = useState(null);
+    const handlePublish = (id, dataPublish) => {
         setSelectedId(id);
+        setDataPublish(dataPublish);
         setIsDialogOpen(true);
     };
 
@@ -18,8 +22,10 @@ export default function Show({ data, auth }) {
     }
 
     const confirmPublish = () => {
-        if (selectedId) {
+        if (selectedId && !dataPublish) {
             patchRequest(`/projects/publish/${selectedId}`);
+        } else {
+            patchRequest(`/projects/unpublish/${selectedId}`);
         }
         setIsDialogOpen(false);
     };
@@ -43,10 +49,10 @@ export default function Show({ data, auth }) {
                             Back to List
                         </button>
                         <button
-                            onClick={() => handlePublish(data.id)}
+                            onClick={() => handlePublish(data.id, data.publish)}
                             className="bg-green-500 text-white px-4 py-2 rounded-md"
                         >
-                            Publish
+                            {data.publish ? "Unpublish" : "Publish"}
                         </button>
                     </div>
                 </div>

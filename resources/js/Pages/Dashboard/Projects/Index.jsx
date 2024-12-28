@@ -13,8 +13,14 @@ export default function Index(props) {
     const [selectedId, setSelectedId] = useState(null);
 
     const { delete: deleteRequest } = useForm();
+    const { patch: patchRequest } = useForm();
 
     const handleDelete = (id) => {
+        setSelectedId(id);
+        setIsDialogOpen(true);
+    };
+
+    const handleUnPublish = (id, publish) => {
         setSelectedId(id);
         setIsDialogOpen(true);
     };
@@ -22,6 +28,13 @@ export default function Index(props) {
     const confirmDelete = () => {
         if (selectedId) {
             deleteRequest(`/projects/delete/${selectedId}`);
+        }
+        setIsDialogOpen(false);
+    };
+
+    const confirmUnPublish = () => {
+        if (selectedId) {
+            patchRequest(`/projects/unpublish/${selectedId}`);
         }
         setIsDialogOpen(false);
     };
@@ -124,21 +137,40 @@ export default function Index(props) {
                                             >
                                                 <i className="ri-eye-line"></i>
                                             </Link>
-                                            <Link
-                                                href={`/projects/edit/${item.id}`}
-                                                method="get"
-                                                className="font-medium text-2xl ml-3 text-blue-500 hover:text-white"
-                                            >
-                                                <i className="ri-pencil-line"></i>
-                                            </Link>
-                                            <button
-                                                className="font-medium text-2xl ml-3 text-red-500 hover:text-white"
-                                                onClick={() =>
-                                                    handleDelete(item.id)
-                                                }
-                                            >
-                                                <i className="ri-delete-bin-line"></i>
-                                            </button>
+                                            {item.publish !== 1 && (
+                                                <>
+                                                    <Link
+                                                        href={`/projects/edit/${item.id}`}
+                                                        method="get"
+                                                        className="font-medium text-2xl ml-3 text-blue-500 hover:text-white"
+                                                    >
+                                                        <i className="ri-pencil-line"></i>
+                                                    </Link>
+                                                    <button
+                                                        className="font-medium text-2xl ml-3 text-red-500 hover:text-white"
+                                                        onClick={() =>
+                                                            handleDelete(
+                                                                item.id
+                                                            )
+                                                        }
+                                                    >
+                                                        <i className="ri-delete-bin-line"></i>
+                                                    </button>
+                                                </>
+                                            )}
+                                            {item.publish === 1 && (
+                                                <button
+                                                    className="font-medium text-2xl ml-3 text-red-500 hover:text-white"
+                                                    onClick={() =>
+                                                        handleUnPublish(
+                                                            item.id,
+                                                            item.publish
+                                                        )
+                                                    }
+                                                >
+                                                    <i className="ri-arrow-go-back-fill"></i>
+                                                </button>
+                                            )}
                                         </td>
                                     </tr>
                                 ))}
@@ -153,8 +185,12 @@ export default function Index(props) {
             <ConfirmationDialog
                 isOpen={isDialogOpen}
                 onClose={() => setIsDialogOpen(false)}
-                onConfirm={confirmDelete}
-                message="Are you sure you want to delete this project?"
+                onConfirm={selectedId ? confirmUnPublish : confirmDelete}
+                message={
+                    selectedId
+                        ? "Are you sure you want to un publish this project?"
+                        : "Are you sure you want to delete this project?"
+                }
             />
         </AuthenticatedLayout>
     );
