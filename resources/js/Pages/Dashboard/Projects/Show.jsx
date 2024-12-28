@@ -56,12 +56,17 @@ export default function Show({ data, auth }) {
                         </button>
                     </div>
                 </div>
-                <div className="flex justify-center">
+                <div className="flex justify-center pt-10">
                     <img
                         src={data.banner}
                         alt={data.title}
-                        className="w-2/5 h-auto rounded-md mx-auto py-10"
+                        className="w-2/5 h-auto rounded-md mx-auto"
                     />
+                </div>
+                <div className="flex justify-center pb-10 pt-1">
+                    {data.lang_urls.map((lang, index) => (
+                        <i className={`text-2xl mr-1 ${lang}`} key={index}></i>
+                    ))}
                 </div>
                 <div
                     className="text-center content"
