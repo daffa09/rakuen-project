@@ -6,11 +6,13 @@ import ProjectRecent from "@/Components/Homepage/ProjectRecent";
 import Footer from "@/Components/Layouts/Footer";
 
 export default function Homepage(props) {
+    const userId = props.auth.user ? props.auth.user.id : null;
+
     return (
         <>
             <Head title={props.title} />
             <div id="hero">
-                <Navbar active={props.active} />
+                <Navbar active={props.active} user={userId} />
                 <HeroPage />
             </div>
             <AboutMe />
