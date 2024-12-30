@@ -2,13 +2,31 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { useForm, Head, Link } from "@inertiajs/react";
 import Paginator from "@/Components/Paginator";
 import { useState } from "react";
-import ConfirmationDialog from "@/Components/ConfirmationDialog";
+import CreateDialogCategory from "@/Components/Categories/CreateDialogCategory";
 
 export default function Index(props) {
     const { auth, flash = {} } = props;
     const data = props.data.data;
     const meta = props.data;
-    console.log(data, meta);
+
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [selectedId, setSelectedId] = useState(null);
+    const { post } = useForm();
+
+    const createCategory = async (categoryName) => {
+        if (categoryName === "") {
+            alert("Category name cannot be empty");
+            retrun;
+        }
+
+        const request = {
+            name: categoryName,
+            createdBy: auth.user.name,
+        };
+
+        post(route("categories.store", request));
+        setIsDialogOpen(false);
+    };
 
     return (
         <AuthenticatedLayout user={auth.user}>
@@ -28,6 +46,14 @@ export default function Index(props) {
                     )}
 
                     <div className="relative overflow-x-auto shadow-md sm:rounded-lg mb-5">
+                        <div className="flex justify-end mb-5">
+                            <button
+                                className="bg-blue-500 text-white rounded-md p-2 font-semibold w-28 text-center cursor-pointer"
+                                onClick={() => setIsDialogOpen(true)}
+                            >
+                                Create
+                            </button>
+                        </div>
                         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
                             <table className="w-full text-sm text-left rtl:text-right text-gray-400">
                                 <thead className="text-xs uppercase bg-gray-700 text-gray-400">
@@ -38,9 +64,10 @@ export default function Index(props) {
                                         <th scope="col" className="px-6 py-3">
                                             Category Name
                                         </th>
-                                        <th scope="col" className="px-6 py-3">
-                                            Action
-                                        </th>
+                                        <th
+                                            scope="col"
+                                            className="px-6 py-3"
+                                        ></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -51,7 +78,7 @@ export default function Index(props) {
                                                 index % 2 === 0
                                                     ? "odd:bg-gray-900"
                                                     : "even:bg-gray-800"
-                                            } border-b border-gray-700`}
+                                            } border-b border-gray-700 text-xl`}
                                         >
                                             <td className="px-6 py-4">
                                                 {index + 1}
@@ -63,12 +90,20 @@ export default function Index(props) {
                                                 {category.name}
                                             </th>
                                             <td className="px-6 py-4">
-                                                <a
+                                                <Link
                                                     href="#"
-                                                    className="font-medium text-blue-500 hover:underline"
+                                                    method="get"
+                                                    className="font-medium text-2xl ml-3 text-blue-500 hover:text-white"
                                                 >
-                                                    Edit
-                                                </a>
+                                                    <i className="ri-pencil-line"></i>
+                                                </Link>
+                                                <Link
+                                                    href="#"
+                                                    method="get"
+                                                    className="font-medium text-2xl ml-3 text-red-500 hover:text-white"
+                                                >
+                                                    <i className="ri-delete-bin-line"></i>
+                                                </Link>
                                             </td>
                                         </tr>
                                     ))}
@@ -78,6 +113,13 @@ export default function Index(props) {
                     </div>
                     <Paginator meta={meta} />
                 </div>
+
+                <CreateDialogCategory
+                    isOpen={isDialogOpen}
+                    onClose={() => setIsDialogOpen(false)}
+                    onConfirm={(categoryName) => createCategory(categoryName)}
+                    message="Create Category"
+                />
             </div>
         </AuthenticatedLayout>
     );
