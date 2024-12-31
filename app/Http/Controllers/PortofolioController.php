@@ -172,7 +172,7 @@ class PortofolioController extends Controller
      * Display the specified resource.
      */
     public function show(string $id) {
-         $project = Projects::query()
+        $project = Projects::query()
             ->leftJoin('categories', 'projects.category_id', '=', 'categories.id')
             ->selectRaw('
                 projects.id,

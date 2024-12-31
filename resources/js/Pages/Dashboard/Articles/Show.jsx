@@ -21,9 +21,9 @@ export default function Show({ data, auth }) {
 
     const confirmPublish = () => {
         if (selectedId && !dataPublish) {
-            patchRequest(`/projects/publish/${selectedId}`);
+            patchRequest(`/articles/publish/${selectedId}`);
         } else {
-            patchRequest(`/projects/unpublish/${selectedId}`);
+            patchRequest(`/articles/unpublish/${selectedId}`);
         }
         setIsDialogOpen(false);
     };
@@ -61,13 +61,8 @@ export default function Show({ data, auth }) {
                         className="w-2/5 h-auto rounded-md mx-auto"
                     />
                 </div>
-                <div className="flex justify-center pb-10 pt-1">
-                    {data.lang_urls.map((lang, index) => (
-                        <i className={`text-2xl mr-1 ${lang}`} key={index}></i>
-                    ))}
-                </div>
                 <div
-                    className="text-center content"
+                    className="text-center content pt-10 pb-1"
                     dangerouslySetInnerHTML={{ __html: data.content }}
                 ></div>
                 <div className="text-center py-10">
@@ -116,7 +111,7 @@ export default function Show({ data, auth }) {
                 isOpen={isDialogOpen}
                 onClose={() => setIsDialogOpen(false)}
                 onConfirm={confirmPublish}
-                message="Are you sure you want to publish this project?"
+                message="Are you sure you want to publish this article?"
             />
         </AuthenticatedLayout>
     );

@@ -29,14 +29,14 @@ export default function Index(props) {
 
     const confirmDelete = () => {
         if (selectedId) {
-            deleteRequest(`/projects/delete/${selectedId}`);
+            deleteRequest(`/articles/delete/${selectedId}`);
         }
         setIsDialogOpen(false);
     };
 
     const confirmUnPublish = () => {
         if (selectedId) {
-            patchRequest(`/projects/unpublish/${selectedId}`);
+            patchRequest(`/articles/unpublish/${selectedId}`);
         }
         setIsDialogOpen(false);
     };
@@ -48,7 +48,7 @@ export default function Index(props) {
             <div className="py-12">
                 <div className="mx-auto" style={{ width: "80%" }}>
                     <h1 className="text-5xl font-semibold pb-10 text-center">
-                        Projects List
+                        Articles List
                     </h1>
 
                     {/* Tampilkan pesan sukses */}
@@ -61,7 +61,7 @@ export default function Index(props) {
                     <div className="relative overflow-x-auto shadow-md sm:rounded-lg mb-5">
                         <div className="flex justify-end mb-5">
                             <a
-                                href={route("projects.create")}
+                                href={route("articles.create")}
                                 className="bg-blue-500 text-white rounded-md p-2 font-semibold w-28 text-center cursor-pointer"
                             >
                                 Create
@@ -133,7 +133,7 @@ export default function Index(props) {
                                             style={{ width: "200px" }}
                                         >
                                             <Link
-                                                href={`/projects/show/${item.id}`}
+                                                href={`/articles/show/${item.id}`}
                                                 method="get"
                                                 className="font-medium text-2xl ml-3 text-green-500 hover:text-white"
                                             >
@@ -142,7 +142,7 @@ export default function Index(props) {
                                             {item.publish !== 1 && (
                                                 <>
                                                     <Link
-                                                        href={`/projects/edit/${item.id}`}
+                                                        href={`/articles/edit/${item.id}`}
                                                         method="get"
                                                         className="font-medium text-2xl ml-3 text-blue-500 hover:text-white"
                                                     >
@@ -192,8 +192,8 @@ export default function Index(props) {
                 }
                 message={
                     selectedPublish === 1
-                        ? "Are you sure you want to un publish this project?"
-                        : "Are you sure you want to delete this project?"
+                        ? "Are you sure you want to un publish this article?"
+                        : "Are you sure you want to delete this article?"
                 }
             />
         </AuthenticatedLayout>

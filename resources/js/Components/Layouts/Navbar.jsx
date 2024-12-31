@@ -1,8 +1,6 @@
 import { useState } from "react";
 
 export default function Navbar({ active, user }) {
-    console.log(user);
-
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const toggleMenu = () => {
