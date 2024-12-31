@@ -44,8 +44,8 @@ class CategoryController extends Controller
 
     public function store(Request $request) {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'createdBy' => 'required|string|max:255'
+            'name' => 'required|string|max:225',
+            'createdBy' => 'required|string|max:250'
         ]);
 
         $data = new Categories();
