@@ -106,14 +106,6 @@ export default function Navbar({ active, user }) {
                     </ul>
                 </div>
                 {/* logo gihtub */}
-                {user && (
-                    <a
-                        href={route("dashboard")}
-                        className={`block py-2 px-3 md:p-0 hover:text-sky-300`}
-                    >
-                        Back to Dashboard
-                    </a>
-                )}
                 <div className="hidden md:block">
                     <a href="https://github.com/daffa09">
                         <i className="ri-github-line ri-2x border-gradient rounded-full p-1"></i>
