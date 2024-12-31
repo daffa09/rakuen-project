@@ -1,8 +1,10 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { useForm, Head, Link } from "@inertiajs/react";
+import { useForm, Head } from "@inertiajs/react";
 import Paginator from "@/Components/Paginator";
 import { useState } from "react";
 import CreateDialogCategory from "@/Components/Categories/CreateDialogCategory";
+import ConfirmationDialog from "@/Components/ConfirmationDialog";
+import { Inertia } from "@inertiajs/inertia";
 
 export default function Index(props) {
     const { auth, flash = {} } = props;
@@ -10,8 +12,23 @@ export default function Index(props) {
     const meta = props.data;
 
     const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [isDialogModeOpen, setIsDialogModeOpen] = useState(false);
     const [selectedId, setSelectedId] = useState(null);
-    const { post } = useForm();
+    const [selectedCategoryName, setSelectedCategoryName] = useState("");
+    const [methodRequest, setMethodRequest] = useState("");
+    const { post, delete: deleteRequest } = useForm();
+
+    const showDialogMode = (id, mode, valueDefault = "") => {
+        setSelectedId(id);
+        if (mode === "edit") {
+            setMethodRequest("edit");
+            setSelectedCategoryName(valueDefault);
+            setIsDialogOpen(true);
+        } else {
+            setMethodRequest("delete");
+            setIsDialogModeOpen(true);
+        }
+    };
 
     const createCategory = async (categoryName) => {
         if (categoryName === "") {
@@ -26,6 +43,21 @@ export default function Index(props) {
 
         post(route("categories.store", request));
         setIsDialogOpen(false);
+    };
+
+    const editCategory = async (categoryName) => {
+        Inertia.patch(`/categories/${selectedId}`, {
+            name: categoryName,
+            updatedBy: auth.user.name,
+        });
+        setIsDialogOpen(false);
+    };
+
+    const deleteCategory = async () => {
+        if (selectedId) {
+            deleteRequest(`/categories/${selectedId}`);
+        }
+        setIsDialogModeOpen(false);
     };
 
     return (
@@ -73,7 +105,7 @@ export default function Index(props) {
                                 <tbody>
                                     {data.map((category, index) => (
                                         <tr
-                                            key={category.id}
+                                            key={index}
                                             className={`${
                                                 index % 2 === 0
                                                     ? "odd:bg-gray-900"
@@ -90,20 +122,32 @@ export default function Index(props) {
                                                 {category.name}
                                             </th>
                                             <td className="px-6 py-4">
-                                                <Link
-                                                    href="#"
-                                                    method="get"
+                                                <button
+                                                    onClick={() =>
+                                                        showDialogMode(
+                                                            category.id,
+                                                            "edit",
+                                                            category.name
+                                                        )
+                                                    }
                                                     className="font-medium text-2xl ml-3 text-blue-500 hover:text-white"
                                                 >
                                                     <i className="ri-pencil-line"></i>
-                                                </Link>
-                                                <Link
-                                                    href="#"
-                                                    method="get"
-                                                    className="font-medium text-2xl ml-3 text-red-500 hover:text-white"
-                                                >
-                                                    <i className="ri-delete-bin-line"></i>
-                                                </Link>
+                                                </button>
+                                                {!category.articles &&
+                                                    !category.projects && (
+                                                        <button
+                                                            onClick={() =>
+                                                                showDialogMode(
+                                                                    category.id,
+                                                                    "delete"
+                                                                )
+                                                            }
+                                                            className="font-medium text-2xl ml-3 text-red-500 hover:text-white"
+                                                        >
+                                                            <i className="ri-delete-bin-line"></i>
+                                                        </button>
+                                                    )}
                                             </td>
                                         </tr>
                                     ))}
@@ -117,8 +161,26 @@ export default function Index(props) {
                 <CreateDialogCategory
                     isOpen={isDialogOpen}
                     onClose={() => setIsDialogOpen(false)}
-                    onConfirm={(categoryName) => createCategory(categoryName)}
-                    message="Create Category"
+                    onConfirm={
+                        methodRequest === "edit"
+                            ? (categoryName) => editCategory(categoryName)
+                            : (categoryName) => createCategory(categoryName)
+                    }
+                    title={
+                        methodRequest === "edit"
+                            ? "Edit Category"
+                            : "Create Category"
+                    }
+                    defaultValue={
+                        methodRequest === "edit" ? selectedCategoryName : ""
+                    }
+                />
+
+                <ConfirmationDialog
+                    isOpen={isDialogModeOpen}
+                    onClose={() => setIsDialogModeOpen(false)}
+                    onConfirm={deleteCategory}
+                    message={"Are you sure you want to delete this category?"}
                 />
             </div>
         </AuthenticatedLayout>

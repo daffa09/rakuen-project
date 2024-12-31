@@ -1,12 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 export default function CreateDialogCategory({
     isOpen,
     onClose,
     onConfirm,
-    message,
+    title,
+    defaultValue = "",
 }) {
     const [categoryName, setCategoryName] = useState("");
+
+    // Set nilai default ke input saat dialog terbuka
+    useEffect(() => {
+        if (isOpen) {
+            setCategoryName(defaultValue); // Set nilai default ke state input
+        }
+    }, [isOpen, defaultValue]);
 
     if (!isOpen) return null;
 
@@ -18,7 +26,7 @@ export default function CreateDialogCategory({
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
             <div className="bg-white rounded-lg shadow-lg p-6 w-1/3">
                 <h2 className="text-xl text-black font-bold mb-4 text-center">
-                    {message}
+                    {title}
                 </h2>
                 <div className="">
                     <div className="form">
