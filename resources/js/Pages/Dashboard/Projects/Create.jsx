@@ -58,7 +58,7 @@ export default function Index({ editData, auth }) {
 
     const fetchCategories = async () => {
         try {
-            const response = await fetch("/categories");
+            const response = await fetch("/getAllCategories");
             if (!response.ok) {
                 throw new Error("Network response was not ok");
             }
