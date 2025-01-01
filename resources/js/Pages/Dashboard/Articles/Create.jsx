@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { Head, useForm } from "@inertiajs/react";
+import { Head, useForm, router } from "@inertiajs/react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import Editor from "@/Components/Editor";
 
 export default function Index({ editData, auth }) {
-    const { data, setData, post, put } = useForm({
+    const { data, setData, post, processing } = useForm({
+        id: "",
         title: "",
         banner: null,
         content: "",
         category: "",
-        lang_images: "",
         gallery: [],
     });
 
@@ -20,12 +20,12 @@ export default function Index({ editData, auth }) {
     useEffect(() => {
         fetchCategories();
         if (editData.id) {
-            data.content = editData.content;
-            data.title = editData.title;
-            data.category = editData.category_id;
-            data.lang_images = editData.lang_urls;
-            data.banner = editData.banner;
-            data.gallery = editData.gallery;
+            setData("id", editData.id);
+            setData("content", editData.content);
+            setData("title", editData.title);
+            setData("category", editData.category_id);
+            setData("banner", editData.banner);
+            setData("gallery", editData.gallery);
             setBannerPreview(editData.banner);
             setGalleryPreview(editData.gallery);
         }
@@ -73,9 +73,9 @@ export default function Index({ editData, auth }) {
         event.preventDefault();
         try {
             if (editData.id) {
-                put(route("projects.update", editData.id));
+                post(route("articles.update"));
             } else {
-                post(route("projects.store"));
+                post(route("articles.store"));
             }
         } catch (error) {
             if (error.response && error.response.status === 422) {
@@ -91,7 +91,7 @@ export default function Index({ editData, auth }) {
             <div className="py-12">
                 <div className="mx-auto" style={{ width: "80%" }}>
                     <h1 className="text-5xl font-semibold pb-10 text-center">
-                        {editData.id ? "Edit Project" : "Create Project"}
+                        {editData.id ? "Edit Articles" : "Create Articles"}
                     </h1>
                     <div className="w-9/12 mx-auto">
                         <form
@@ -187,51 +187,25 @@ export default function Index({ editData, auth }) {
                             </div>
                             <div className="mb-4">
                                 <label
-                                    htmlFor="lang_images"
-                                    className="block text-xl font-medium"
-                                >
-                                    Languange Logo{" "}
-                                    <span className="text-sm">
-                                        (copy from{" "}
-                                        <a
-                                            href="https://devicon.dev/"
-                                            target="_blank"
-                                            className="underline text-blue-500 hover:to-blue-700"
-                                        >
-                                            https://devicon.dev/
-                                        </a>
-                                        ) [hint: seperate by coma]
-                                    </span>
-                                </label>
-                                <input
-                                    type="text"
-                                    placeholder="devicon-html5-plain, devicon-javascript-plain"
-                                    name="lang_images"
-                                    id="lang_images"
-                                    value={data.lang_images}
-                                    onChange={(e) =>
-                                        setData("lang_images", e.target.value)
-                                    }
-                                    className="mt-1 text-black focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                                />
-                            </div>
-                            <div className="mb-4">
-                                <label
                                     htmlFor="gallery"
                                     className="block text-xl font-medium"
                                 >
                                     Gallery
                                 </label>
                                 {galleryPreview.length > 0 && (
-                                    <div className="mb-4 flex">
-                                        {galleryPreview.map((image, index) => (
-                                            <img
-                                                key={index}
-                                                src={image}
-                                                alt="Gallery Preview"
-                                                className="w-36 h-auto rounded-md ml-4"
-                                            />
-                                        ))}
+                                    <div className="w-full mb-4 flex justify-center">
+                                        <div className="grid grid-cols-4 gap-4">
+                                            {galleryPreview.map(
+                                                (image, index) => (
+                                                    <img
+                                                        key={index}
+                                                        src={image}
+                                                        alt={image}
+                                                        className="w-36 h-auto rounded-md ml-4"
+                                                    />
+                                                )
+                                            )}
+                                        </div>
                                     </div>
                                 )}
                                 <input
@@ -254,11 +228,12 @@ export default function Index({ editData, auth }) {
                                 </button>
                                 <button
                                     type="submit"
+                                    disabled={processing}
                                     className="bg-indigo-500 text-white px-4 py-2 rounded-md"
                                 >
                                     {editData.id
-                                        ? "Edit Project"
-                                        : "Create Project"}
+                                        ? "Edit Articles"
+                                        : "Create Articles"}
                                 </button>
                             </div>
                         </form>

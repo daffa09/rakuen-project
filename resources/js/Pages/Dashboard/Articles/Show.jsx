@@ -21,9 +21,9 @@ export default function Show({ data, auth }) {
 
     const confirmPublish = () => {
         if (selectedId && !dataPublish) {
-            patchRequest(`/projects/publish/${selectedId}`);
+            patchRequest(`/articles/publish/${selectedId}`);
         } else {
-            patchRequest(`/projects/unpublish/${selectedId}`);
+            patchRequest(`/articles/unpublish/${selectedId}`);
         }
         setIsDialogOpen(false);
     };
@@ -61,19 +61,24 @@ export default function Show({ data, auth }) {
                         className="w-2/5 h-auto rounded-md mx-auto"
                     />
                 </div>
-                <div className="flex justify-center pb-10 pt-1">
-                    {data.lang_urls.map((lang, index) => (
-                        <i className={`text-2xl mr-1 ${lang}`} key={index}></i>
-                    ))}
-                </div>
                 <div
-                    className="text-center content"
+                    className="text-center content pt-10 pb-1"
                     dangerouslySetInnerHTML={{ __html: data.content }}
                 ></div>
                 <div className="text-center py-10">
                     <h1 className="text-3xl">Gallery</h1>
                 </div>
-                <div className="m-auto w-2/3 grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div
+                    className={`m-auto w-2/3 grid grid-cols-2 ${
+                        galleryImage.length === 1
+                            ? "md:grid-cols-1"
+                            : galleryImage.length === 2
+                            ? "md:grid-cols-2"
+                            : galleryImage.length === 3
+                            ? "md:grid-cols-3"
+                            : "md:grid-cols-4"
+                    } gap-4`}
+                >
                     {(() => {
                         const elements = [];
                         for (
@@ -83,26 +88,35 @@ export default function Show({ data, auth }) {
                         ) {
                             const group = galleryImage[groupIndex];
                             const groupElements = (
-                                <div key={groupIndex} className="grid gap-4">
-                                    {(() => {
-                                        const imageElements = [];
-                                        for (
-                                            let imageIndex = 0;
-                                            imageIndex < group.length;
-                                            imageIndex++
-                                        ) {
-                                            imageElements.push(
-                                                <div key={imageIndex}>
-                                                    <img
-                                                        className="h-auto max-w-full rounded-lg"
-                                                        src={group[imageIndex]}
-                                                        alt={`Gallery image ${groupIndex}-${imageIndex}`}
-                                                    />
-                                                </div>
-                                            );
-                                        }
-                                        return imageElements;
-                                    })()}
+                                <div className="flex justify-center">
+                                    <div
+                                        key={groupIndex}
+                                        className="grid gap-4"
+                                    >
+                                        {(() => {
+                                            const imageElements = [];
+                                            for (
+                                                let imageIndex = 0;
+                                                imageIndex < group.length;
+                                                imageIndex++
+                                            ) {
+                                                imageElements.push(
+                                                    <div key={imageIndex}>
+                                                        <img
+                                                            className="h-auto max-w-52 rounded-lg"
+                                                            src={
+                                                                group[
+                                                                    imageIndex
+                                                                ]
+                                                            }
+                                                            alt={`${groupIndex}-${imageIndex}`}
+                                                        />
+                                                    </div>
+                                                );
+                                            }
+                                            return imageElements;
+                                        })()}
+                                    </div>
                                 </div>
                             );
                             elements.push(groupElements);
@@ -116,7 +130,7 @@ export default function Show({ data, auth }) {
                 isOpen={isDialogOpen}
                 onClose={() => setIsDialogOpen(false)}
                 onConfirm={confirmPublish}
-                message="Are you sure you want to publish this project?"
+                message="Are you sure you want to publish this article?"
             />
         </AuthenticatedLayout>
     );

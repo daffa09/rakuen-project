@@ -40,8 +40,23 @@ Route::middleware('auth', 'verified')->group(function () {
     Route::put('/projects/edit/{id}', [PortofolioController::class, 'update'])->name('projects.update');
     Route::delete('/projects/delete/{id}', [PortofolioController::class, 'destroy'])->name('projects.destroy');
 
+    // articles
+    Route::get('/articles/dashboard', [ArticlesController::class, 'indexDashboard'])->name('articles.indexDashboard');
+    Route::get('/articles/create', [ArticlesController::class, 'create'])->name('articles.create');
+    Route::get('/articles/show/{id}', [ArticlesController::class, 'show'])->name('articles.show');
+    Route::patch('/articles/publish/{id}', [ArticlesController::class, 'publish'])->name('articles.publish');
+    Route::patch('/articles/unpublish/{id}', [ArticlesController::class, 'unpublish'])->name('articles.unpublish');
+    Route::post('/articles', [ArticlesController::class, 'store'])->name('articles.store');
+    Route::get('/articles/edit/{id}', [ArticlesController::class, 'edit'])->name('articles.edit');
+    Route::post('/articles/edit', [ArticlesController::class, 'update'])->name('articles.update');
+    Route::delete('/articles/delete/{id}', [ArticlesController::class, 'destroy'])->name('articles.destroy');
+
     // category
     Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
+    Route::get('/getAllCategories', [CategoryController::class, 'getAllCategories'])->name('categories.getAllCategories');
+    Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store');
+    Route::patch('/categories/{id}', [CategoryController::class, 'update'])->name('categories.update');
+    Route::delete('/categories/{id}', [CategoryController::class, 'destroy'])->name('categories.destroy');
 });
 
 require __DIR__ . '/auth.php';

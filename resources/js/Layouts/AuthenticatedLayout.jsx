@@ -39,6 +39,20 @@ export default function Authenticated({ user, header, children }) {
                                 >
                                     Projects
                                 </NavLink>
+                                <NavLink
+                                    href={route("articles.indexDashboard")}
+                                    active={route().current(
+                                        "articles.indexDashboard"
+                                    )}
+                                >
+                                    Articles
+                                </NavLink>
+                                <NavLink
+                                    href={route("categories.index")}
+                                    active={route().current("categories.index")}
+                                >
+                                    Categories
+                                </NavLink>
                             </div>
                         </div>
 
@@ -74,6 +88,12 @@ export default function Authenticated({ user, header, children }) {
                                             href={route("profile.edit")}
                                         >
                                             Profile
+                                        </Dropdown.Link>
+                                        <Dropdown.Link
+                                            href={route("home")}
+                                            as="button"
+                                        >
+                                            Back To Website
                                         </Dropdown.Link>
                                         <Dropdown.Link
                                             href={route("logout")}
