@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Head, useForm, router } from "@inertiajs/react";
+import { Head, useForm } from "@inertiajs/react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import Editor from "@/Components/Editor";
 
