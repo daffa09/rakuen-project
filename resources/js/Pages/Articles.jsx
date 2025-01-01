@@ -3,6 +3,18 @@ import Navbar from "@/Components/Layouts/Navbar";
 import Footer from "@/Components/Layouts/Footer";
 import Paginator from "@/Components/Paginator";
 
+// Utility function to strip HTML tags
+const stripHtmlTags = (html) => {
+    const doc = new DOMParser().parseFromString(html, "text/html");
+    return doc.body.textContent || "";
+};
+
+// Utility function to truncate text
+const truncateText = (text, length) => {
+    if (text.length <= length) return text;
+    return text.substring(0, length) + "...";
+};
+
 export default function Articles(props) {
     const data = props.data ? props.data.data : [];
 
@@ -34,14 +46,23 @@ export default function Articles(props) {
                                 Tidak ada article
                             </p>
                         ) : (
-                            data.map((project, i) => {
+                            data.map((articles, i) => {
                                 // Calculate the time difference between created_at and now with a 14-day range
-                                const createdAt = new Date(project.created_at);
+                                const createdAt = new Date(articles.created_at);
                                 const now = new Date();
                                 const twoWeeksInMilliseconds =
                                     14 * 24 * 60 * 60 * 1000;
                                 const isNew =
                                     now - createdAt < twoWeeksInMilliseconds;
+
+                                // Process content to remove HTML tags and truncate
+                                const strippedContent = stripHtmlTags(
+                                    articles.content
+                                );
+                                const truncatedContent = truncateText(
+                                    strippedContent,
+                                    250
+                                );
 
                                 return (
                                     <div
@@ -53,27 +74,24 @@ export default function Articles(props) {
                                                 <img
                                                     className="mb-5 w-7"
                                                     src="/img/new.png"
-                                                    alt="New Project"
+                                                    alt="New articles"
                                                 />
                                             )}
                                             <img
                                                 className="object-cover w-full h-64 rounded-lg mt-2"
-                                                src={project.banner}
-                                                alt="project images"
+                                                src={articles.banner}
+                                                alt="articles images"
                                             />
                                         </a>
                                         <div className="flex flex-col justify-center p-4">
                                             <h5 className="mb-2 text-xl font-bold ">
-                                                {project.category_name}
+                                                {articles.category_name}
                                             </h5>
                                             <h2 className="mb-2 text-4xl font-bold ">
-                                                {project.title}
+                                                {articles.title}
                                             </h2>
                                             <p className="mb-3 font-normal text-justify">
-                                                {project.content.substring(
-                                                    0,
-                                                    250
-                                                ) + "..."}
+                                                {truncatedContent}
                                             </p>
                                         </div>
                                     </div>

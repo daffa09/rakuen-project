@@ -15,7 +15,8 @@ return new class extends Migration
 
         Schema::create('gallery', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('project_id')->constrained('projects')->restrictOnDelete()->cascadeOnUpdate();
+            $table->foreignUuid('project_id')->nullable()->constrained('projects')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignUuid('article_id')->nullable()->constrained('articles')->cascadeOnDelete()->cascadeOnUpdate();
             $table->string('image_url');
             $table->string('created_by');
             $table->string('updated_by')->nullable();
