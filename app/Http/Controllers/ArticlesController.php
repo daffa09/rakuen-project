@@ -8,6 +8,7 @@ use App\Models\Gallery;
 use App\Http\Requests\StoreArticlesRequest;
 use App\Http\Requests\UpdateArticlesRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class ArticlesController extends Controller
@@ -232,20 +233,24 @@ class ArticlesController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request)
     {
          // Validate the request
         $validatedData = $request->validate([
+            'id' => 'required|string',
             'title' => 'required|string|max:255',
             'content' => 'required|string',
             'category' => 'required|exists:categories,id',
             'gallery' => 'nullable|array'
         ]);
 
+        $id = $validatedData['id'];
+
         // Handle banner upload
         if ($request->hasFile('banner')) {
             $validatedData['banner'] = $request->file('banner')->store('banners', 'public');
         } else {
+            // get filename start banner/ from request, because filename is string
             $filename = strstr($request->input('banner'), 'banners/');
             $validatedData['banner'] = $filename;
         }
@@ -259,40 +264,57 @@ class ArticlesController extends Controller
         }
 
         // update the articles
-        $artciles = Articles::findOrFail($id);
-        $artciles->title = $validatedData['title'];
-        $artciles->banner = $validatedData['banner'];
-        $artciles->content = $validatedData['content'];
-        $artciles->category_id = $validatedData['category'];
-        $artciles->updated_by = auth()->id();
-        $artciles->updated_at = now();
-        $artciles->save();
+        $articles = Articles::findOrFail($id);
+        $articles->title = $validatedData['title'];
+        $articles->banner = $validatedData['banner'];
+        $articles->content = $validatedData['content'];
+        $articles->category_id = $validatedData['category'];
+        $articles->updated_by = auth()->id();
+        $articles->updated_at = now();
+        $articles->save();
 
         // cek banner image
         if ($request->hasFile('banner')) {
-            $image = Images::where('artcile_id', $id)->first();
+            $image = Images::where('article_id', $id)->first();
+
+            // remove from storage first
+            $path = strstr($image->image_url, 'banners/');
+            Storage::disk('public')->delete($path);
+
+            // update image
             if ($image) {
-                $image = new Images();
-                $image->id = (string) \Illuminate\Support\Str::uuid();
-                $image->artcile_id = $artciles->id;
-                $image->image_url = $artciles->banner;
-                $image->created_by = auth()->id();
-                $image->created_at = now();
+                $image->image_url = $articles->banner;
+                $image->updated_by = auth()->id();
+                $image->updated_at = now();
                 $image->save();
             }
         }
 
         // Save gallery images
         if (!empty($galleryPaths)) {
+            // Fetch and delete existing gallery images along with their files
+            $existingGalleries = Gallery::where('article_id', $id)->get();
+            foreach ($existingGalleries as $gallery) {
+                // delete gallery image from disk
+                $path = strstr($gallery->image_url, 'galleries/');
+                Storage::disk('public')->delete($path);
+
+                // delete from database
+                $gallery = Gallery::where('article_id', $id)->first();
+                $gallery->delete();
+            }
+
+            // Save new gallery images
             foreach ($galleryPaths as $path) {
-                if (!Gallery::where('artcile_id', $id)->first()) {
-                    $gallery = new Gallery();
-                    $gallery->id = (string) \Illuminate\Support\Str::uuid();
-                    $gallery->artcile_id = $artciles->id;
-                    $gallery->image_url = $path;
-                    $gallery->created_by = auth()->id();
-                    $gallery->save();
-                }
+                $gallery = new Gallery();
+                $gallery->id = (string) \Illuminate\Support\Str::uuid();
+                $gallery->article_id = $id;
+                $gallery->image_url = $path;
+                $gallery->created_by = auth()->id();
+                $gallery->created_at = now();
+                $gallery->updated_by = auth()->id();
+                $gallery->updated_at = now();
+                $gallery->save();
             }
         }
 
@@ -321,8 +343,22 @@ class ArticlesController extends Controller
      */
     public function destroy(string $id)
     {
+        // remove banner image form disk
+        $image = Images::where('article_id', $id)->first();
+        $path = strstr($image->image_url, 'banners/');
+        Storage::disk('public')->delete($path);
+
+        // remove gallery image from disk
+        $gallery = Gallery::where('article_id', $id)->get();
+        foreach ($gallery as $item) {
+            $path = strstr($item->image_url, 'galleries/');
+            Storage::disk('public')->delete($path);
+        }
+
+        // remove from database
         $articles = Articles::find($id);
         $articles->delete();
+
 
         return redirect()->route('articles.indexDashboard')->with('success', 'Articles deleted successfully');
     }

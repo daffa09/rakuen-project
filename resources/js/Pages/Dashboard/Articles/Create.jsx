@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Head, useForm } from "@inertiajs/react";
+import { Head, useForm, router } from "@inertiajs/react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import Editor from "@/Components/Editor";
 
 export default function Index({ editData, auth }) {
-    const { data, setData, post, put } = useForm({
+    const { data, setData, post, processing } = useForm({
+        id: "",
         title: "",
         banner: null,
         content: "",
@@ -19,11 +20,12 @@ export default function Index({ editData, auth }) {
     useEffect(() => {
         fetchCategories();
         if (editData.id) {
-            data.content = editData.content;
-            data.title = editData.title;
-            data.category = editData.category_id;
-            data.banner = editData.banner;
-            data.gallery = editData.gallery;
+            setData("id", editData.id);
+            setData("content", editData.content);
+            setData("title", editData.title);
+            setData("category", editData.category_id);
+            setData("banner", editData.banner);
+            setData("gallery", editData.gallery);
             setBannerPreview(editData.banner);
             setGalleryPreview(editData.gallery);
         }
@@ -71,7 +73,7 @@ export default function Index({ editData, auth }) {
         event.preventDefault();
         try {
             if (editData.id) {
-                put(route("articles.update", editData.id));
+                post(route("articles.update"));
             } else {
                 post(route("articles.store"));
             }
@@ -191,15 +193,19 @@ export default function Index({ editData, auth }) {
                                     Gallery
                                 </label>
                                 {galleryPreview.length > 0 && (
-                                    <div className="mb-4 flex">
-                                        {galleryPreview.map((image, index) => (
-                                            <img
-                                                key={index}
-                                                src={image}
-                                                alt="Gallery Preview"
-                                                className="w-36 h-auto rounded-md ml-4"
-                                            />
-                                        ))}
+                                    <div className="w-full mb-4 flex justify-center">
+                                        <div className="grid grid-cols-4 gap-4">
+                                            {galleryPreview.map(
+                                                (image, index) => (
+                                                    <img
+                                                        key={index}
+                                                        src={image}
+                                                        alt={image}
+                                                        className="w-36 h-auto rounded-md ml-4"
+                                                    />
+                                                )
+                                            )}
+                                        </div>
                                     </div>
                                 )}
                                 <input
@@ -222,6 +228,7 @@ export default function Index({ editData, auth }) {
                                 </button>
                                 <button
                                     type="submit"
+                                    disabled={processing}
                                     className="bg-indigo-500 text-white px-4 py-2 rounded-md"
                                 >
                                     {editData.id

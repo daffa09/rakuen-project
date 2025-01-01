@@ -48,7 +48,7 @@ Route::middleware('auth', 'verified')->group(function () {
     Route::patch('/articles/unpublish/{id}', [ArticlesController::class, 'unpublish'])->name('articles.unpublish');
     Route::post('/articles', [ArticlesController::class, 'store'])->name('articles.store');
     Route::get('/articles/edit/{id}', [ArticlesController::class, 'edit'])->name('articles.edit');
-    Route::put('/articles/edit/{id}', [ArticlesController::class, 'update'])->name('articles.update');
+    Route::post('/articles/edit', [ArticlesController::class, 'update'])->name('articles.update');
     Route::delete('/articles/delete/{id}', [ArticlesController::class, 'destroy'])->name('articles.destroy');
 
     // category
