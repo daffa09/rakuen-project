@@ -17,17 +17,17 @@ export default function ProjectRecent({ data }) {
 
     return (
         <>
-            <div className="md:block bg-dark-ec-2 min-h-screen flex flex-col justify-between">
-                <div>
-                    <div className="grid grid-cols-12 gap-4 p-9">
-                        <h1 className="col-span-6 text-6xl text-white font-semibold font-bai-jamjuree">
+            <div className="bg-dark-ec-2 min-h-screen flex flex-col justify-between md:block">
+                <div className="">
+                    <div className="block md:grid grid-cols-12 gap-4 p-9">
+                        <h1 className="col-span-6 text-3xl md:text-6xl text-white font-semibold font-bai-jamjuree">
                             Look At{" "}
                             <span className="color-gradient">
                                 My Recent <br />
                                 Projects
                             </span>
                         </h1>
-                        <p className="col-span-6 text-white text-xl text-justify">
+                        <p className="col-span-6 text-white text-xl text-justify hidden md:block">
                             Here are a few projects I've completed recently. You
                             can find more details about each project on my
                             portfolio page. I've worked on a range of projects,
@@ -43,7 +43,7 @@ export default function ProjectRecent({ data }) {
                             Tidak ada project
                         </p>
                     ) : (
-                        <div className="flex gap-4 justify-center p-5">
+                        <div className="block md:flex gap-4 justify-center p-5">
                             {projects.map((project, i) => {
                                 const strippedContent = stripHtmlTags(
                                     project.content
@@ -55,7 +55,7 @@ export default function ProjectRecent({ data }) {
 
                                 return (
                                     <div
-                                        className="max-w-md bg-dark-ec-2 border border-gray-200 border-b-0 rounded-lg shadow"
+                                        className="max-w-md bg-dark-ec-2 border border-gray-200 border-b-0 rounded-lg shadow mb-5 md:mb-0"
                                         key={i}
                                     >
                                         <a href="#">
