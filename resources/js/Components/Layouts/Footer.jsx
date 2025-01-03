@@ -33,13 +33,22 @@ export default function Footer() {
                         | All Right Reserved
                     </div>
                     <div className="hidden md:block text-4xl">
-                        <a href="https://www.linkedin.com/in/daffa-fathan/">
+                        <a
+                            href="https://www.linkedin.com/in/daffa-fathan/"
+                            aria-label="LinkedIn"
+                        >
                             <i className="ri-linkedin-fill text-black bg-gradient rounded-full p-1 mx-2"></i>
                         </a>
-                        <a href="https://www.instagram.com/dafathan.v2/">
+                        <a
+                            href="https://www.instagram.com/dafathan.v2/"
+                            aria-label="Instagram"
+                        >
                             <i className="ri-instagram-line text-black bg-gradient rounded-full p-1 mx-2"></i>
                         </a>
-                        <a href="https://github.com/daffa09">
+                        <a
+                            href="https://github.com/daffa09"
+                            aria-label="Github"
+                        >
                             <i className="ri-github-line text-black bg-gradient rounded-full p-1"></i>
                         </a>
                     </div>

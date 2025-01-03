@@ -40,7 +40,7 @@ export default function ProjectRecent({ data }) {
                     </div>
                     {projects.length === 0 ? (
                         <p className="text-white text-xl text-center mt-56">
-                            Tidak ada project
+                            No Project
                         </p>
                     ) : (
                         <div className="block md:flex gap-4 justify-center p-5">
@@ -58,28 +58,36 @@ export default function ProjectRecent({ data }) {
                                         className="max-w-md bg-dark-ec-2 border border-gray-200 border-b-0 rounded-lg shadow mb-5 md:mb-0"
                                         key={i}
                                     >
-                                        <a href="#">
+                                        <a
+                                            href={`/portofolio/detail/${project.id}`}
+                                            aria-label={`View details of project: ${project.title}`}
+                                        >
                                             <img
                                                 className="rounded-t-lg p-1 w-full h-64 object-cover"
                                                 src={project.banner}
                                                 alt={project.title}
+                                                loading="lazy"
                                             />
                                         </a>
                                         <div className="p-5 bg-gradient-bottom">
-                                            <a href="#">
-                                                <h5 className="mb-2 text-xl font-bold tracking-tight text-white">
+                                            <a
+                                                href={`/portofolio/detail/${project.id}`}
+                                                aria-label={`View details of project: ${project.title}`}
+                                            >
+                                                <h2 className="mb-2 text-xl font-bold tracking-tight text-white">
                                                     {truncateText(
                                                         project.title,
                                                         30
                                                     )}
-                                                </h5>
+                                                </h2>
                                             </a>
                                             <p className="mb-3 text-sm font-normal text-white">
                                                 {truncatedContent}
                                             </p>
                                             <a
-                                                href="#"
-                                                className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-green-400 rounded-lg hover:bg-green-800 focus:ring-4"
+                                                href={`/portofolio/detail/${project.id}`}
+                                                className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-green-600 rounded-lg hover:bg-green-700 focus:ring-4 focus:ring-green-800"
+                                                aria-label={`Read more about: ${project.title}`}
                                             >
                                                 Read more
                                                 <svg

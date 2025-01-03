@@ -120,7 +120,10 @@ export default function Navbar({ active }) {
                 </div>
                 {/* logo gihtub */}
                 <div className="hidden md:block">
-                    <a href="https://github.com/daffa09">
+                    <a
+                        href="https://github.com/daffa09"
+                        aria-label="My GitHub profile"
+                    >
                         <i className="ri-github-line ri-2x border-gradient rounded-full p-1"></i>
                     </a>
                 </div>

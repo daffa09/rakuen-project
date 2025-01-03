@@ -13,9 +13,9 @@ export default function AboutMe() {
                     <h1 className="text-3xl md:text-6xl font-semibold color-gradient tracking-wide md:mb-2">
                         About Me
                     </h1>
-                    <h3 className="text-2xl md:text-5xl font-semibold tracking-wide mb-1 md:mb-3">
+                    <h2 className="text-2xl md:text-5xl font-semibold tracking-wide mb-1 md:mb-3">
                         Software Engineer
-                    </h3>
+                    </h2>
                     <p className="text-sm md:text-xl font-light tracking-wide text-justify">
                         I'm a Software Engineer with 2 years of experience in
                         building software industry. I hold a solid educational
