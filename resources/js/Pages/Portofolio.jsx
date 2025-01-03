@@ -58,7 +58,7 @@ export default function Portofolio(props) {
                 <div className="block pb-5">
                     {data.length === 0 ? (
                         <p className="text-center text-white text-xl">
-                            Tidak ada project
+                            No Project
                         </p>
                     ) : (
                         data.map((project, i) => {

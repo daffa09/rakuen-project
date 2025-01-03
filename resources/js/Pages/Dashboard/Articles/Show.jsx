@@ -34,8 +34,10 @@ export default function Show({ data, auth }) {
 
             <div className="py-12">
                 <div className="flex justify-between md:px-40">
-                    <div className="text-left">
-                        <h1 className="text-xl md:text-6xl">{data.title}</h1>
+                    <div className="text-left mx-auto">
+                        <h1 className="text-2xl font-bold md:text-6xl">
+                            {data.title}
+                        </h1>
                     </div>
                     <div className="text-xs md:text-base">
                         <button
@@ -58,16 +60,18 @@ export default function Show({ data, auth }) {
                     <img
                         src={data.banner}
                         alt={data.title}
-                        className="w-2/5 h-auto rounded-md mx-auto"
+                        className="w-2/3 md:w-2/5 h-auto rounded-md mx-auto"
                     />
                 </div>
                 <div
-                    className="text-center content pt-10 pb-1"
+                    className="text-justify content mx-4 md:mx-72 mt-11"
                     dangerouslySetInnerHTML={{ __html: data.content }}
                 ></div>
-                <div className="text-center py-10">
-                    <h1 className="text-3xl">Gallery</h1>
-                </div>
+                {galleryImage.length > 1 && (
+                    <div className="text-center py-10">
+                        <h1 className="text-3xl">Gallery</h1>
+                    </div>
+                )}
                 <div
                     className={`m-auto w-2/3 grid grid-cols-2 ${
                         galleryImage.length === 1

@@ -34,8 +34,10 @@ export default function Show({ data, auth }) {
 
             <div className="py-12">
                 <div className="flex justify-between md:px-40">
-                    <div className="mx-auto">
-                        <h1 className="text-xl md:text-6xl">{data.title}</h1>
+                    <div className="text-left mx-auto">
+                        <h1 className="text-2xl font-bold md:text-6xl">
+                            {data.title}
+                        </h1>
                     </div>
                     <div className="text-xs md:text-base">
                         <button
