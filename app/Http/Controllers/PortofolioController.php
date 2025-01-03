@@ -15,7 +15,8 @@ class PortofolioController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index() {
+    public function index()
+    {
         $query = Projects::query()
             ->leftJoin('categories', 'projects.category_id', '=', 'categories.id')
             ->leftJoin('lang_images', 'projects.id', '=', 'lang_images.project_id')
@@ -38,7 +39,58 @@ class PortofolioController extends Controller
         ]);
     }
 
-    public function indexDashboard() {
+    public function showDetail(string $id)
+    {
+        $project = Projects::query()
+            ->leftJoin('categories', 'projects.category_id', '=', 'categories.id')
+            ->selectRaw('
+                projects.id,
+                projects.title,
+                projects.banner,
+                projects.content,
+                projects.publish,
+                projects.created_at,
+                projects.updated_at,
+                projects.category_id,
+                MAX(categories.name) as category_name,
+                (
+                    SELECT GROUP_CONCAT(lang_images.url)
+                    FROM lang_images
+                    WHERE lang_images.project_id = projects.id
+                ) as lang_urls,
+                (
+                    SELECT GROUP_CONCAT(gallery.image_url)
+                    FROM gallery
+                    WHERE gallery.project_id = projects.id
+                ) as gallery
+            ')
+            ->where('projects.id', $id)
+            ->groupBy([
+                'projects.id',
+                'projects.title',
+                'projects.banner',
+                'projects.content',
+                'projects.publish',
+                'projects.created_at',
+                'projects.updated_at',
+                'projects.category_id',
+                'categories.name'
+            ])
+            ->first();
+
+        $project->banner = asset('storage/' . $project->banner);
+        $project->lang_urls = $project->lang_urls ? explode(',', $project->lang_urls) : [];
+        $project->gallery = $project->gallery ? array_map(fn($item) => asset('storage/' . $item), explode(',', $project->gallery)) : [];
+
+        return Inertia::render('Detail', [
+            'title' => 'Portofolio',
+            'active' => 'Portofolio',
+            'data' => $project
+        ]);
+    }
+
+    public function indexDashboard()
+    {
         $query = Projects::query()
             ->leftJoin('categories', 'projects.category_id', '=', 'categories.id')
             ->leftJoin('lang_images', 'projects.id', '=', 'lang_images.project_id')
@@ -62,7 +114,8 @@ class PortofolioController extends Controller
         ]);
     }
 
-    public function allProject(Request $request) {
+    public function allProject()
+    {
         $query = Projects::query();
 
         // if ($search = $request->input('search')) {
@@ -90,7 +143,8 @@ class PortofolioController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         // Validate the request
         $validatedData = $request->validate([
             'title' => 'required|string|max:255',
@@ -172,7 +226,8 @@ class PortofolioController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id) {
+    public function show(string $id)
+    {
         $project = Projects::query()
             ->leftJoin('categories', 'projects.category_id', '=', 'categories.id')
             ->selectRaw('
@@ -224,7 +279,8 @@ class PortofolioController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id) {
+    public function edit(string $id)
+    {
         // get the data
         $project = Projects::query()
             ->leftJoin('categories', 'projects.category_id', '=', 'categories.id')
@@ -276,7 +332,8 @@ class PortofolioController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request) {
+    public function update(Request $request)
+    {
         // Validate the request
         $validatedData = $request->validate([
             'id' => 'required|string',
@@ -389,7 +446,8 @@ class PortofolioController extends Controller
         return redirect()->route('projects.indexDashboard')->with('success', 'Project created successfully');
     }
 
-    public function publish(string $id) {
+    public function publish(string $id)
+    {
         $project = Projects::find($id);
         $project->publish = 1;
         $project->save();
@@ -397,7 +455,8 @@ class PortofolioController extends Controller
         return redirect()->route('projects.indexDashboard')->with('success', 'Project published successfully');
     }
 
-    public function unpublish(string $id) {
+    public function unpublish(string $id)
+    {
         $project = Projects::find($id);
         $project->publish = 0;
         $project->save();

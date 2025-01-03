@@ -1,15 +1,30 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-export default function Navbar({ active, user }) {
+export default function Navbar({ active }) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
     };
 
+    useEffect(() => {
+        // close menu when window resize
+        const handleResize = () => {
+            if (window.innerWidth >= 768) {
+                setIsMenuOpen(false);
+            }
+        };
+
+        window.addEventListener("resize", handleResize);
+
+        return () => {
+            window.removeEventListener("resize", handleResize);
+        };
+    }, []);
+
     return (
-        <nav className="bg-black bg-opacity-50">
-            <div className=" font-bai-jamjuree flex flex-wrap items-center justify-between mx-10 p-2">
+        <nav className="bg-black bg-opacity-80 md:bg-opacity-50">
+            <div className=" font-bai-jamjuree flex flex-wrap items-center justify-between p-2 mx-2 md:mx-10">
                 {/* logo DF */}
                 <a
                     href={route("home")}
@@ -44,7 +59,7 @@ export default function Navbar({ active, user }) {
                 <div
                     className={`${
                         isMenuOpen
-                            ? "fixed top-16 left-0 w-full bg-black bg-opacity-50"
+                            ? "absolute top-14 left-0 w-full bg-black bg-opacity-80"
                             : "hidden"
                     } md:relative md:block md:w-auto`}
                     id="navbar-default"
@@ -74,7 +89,7 @@ export default function Navbar({ active, user }) {
                                         : "text-white font-medium"
                                 }`}
                             >
-                                Portofolio
+                                Projects
                             </a>
                         </li>
                         <li>

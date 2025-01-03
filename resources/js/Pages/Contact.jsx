@@ -67,13 +67,13 @@ export default function Contact(props) {
                             </div>
                         </div>
                     )}
-                    <div className="grid grid-cols-2 p-10 gap-5">
+                    <div className="grid md:grid-cols-2 md:p-10 gap-5">
                         {/* left side */}
-                        <div className=" mx-24 text-gray-50 rounded-md p-5 mr-3">
-                            <h1 className="font-semibold text-6xl mb-2 tracking-wider">
+                        <div className="ms-2 md:mx-24 text-gray-50 rounded-md p-5 mr-3">
+                            <h1 className="font-semibold text-3xl md:text-6xl mb-2 tracking-wider">
                                 Get In Touch
                             </h1>
-                            <p className="font-normal text-justify w-5/6">
+                            <p className="text-sm md:text-xl font-normal text-justify w-full md:w-5/6">
                                 Let's talk tech! I'm eager to dive into new
                                 projects or discuss anything tech-related with
                                 you. From brainstorming ideas to exploring the
@@ -82,18 +82,18 @@ export default function Contact(props) {
                                 together!
                             </p>
                             <div className="mt-5">
-                                <h3 className="font-semibold tracking-wide">
+                                <h3 className="text-xl md:text-2xl font-semibold tracking-wide">
                                     Email
                                 </h3>
                                 <a
                                     href="mailto:daffa.fathan9@gmail.com"
-                                    className="text-blue-500 font-semibold"
+                                    className="text-sm md:text-xl text-blue-500 font-semibold"
                                 >
                                     daffa.fathan9@gmail.com
                                 </a>
                             </div>
                             <div className="mt-5 font-semibold tracking-wide">
-                                <h3 className="font-bold text-2xl mb-2">
+                                <h3 className="font-bold text-xl md:text-2xl mb-2">
                                     Social Media
                                 </h3>
                                 <ul>
@@ -101,7 +101,7 @@ export default function Contact(props) {
                                         <a
                                             href="https://www.linkedin.com/in/daffa-fathan/"
                                             target="_blank"
-                                            className="hover:text-blue-500"
+                                            className="text-sm md:text-xl hover:text-blue-500"
                                         >
                                             Linkedin
                                         </a>
@@ -110,7 +110,7 @@ export default function Contact(props) {
                                         <a
                                             href="https://github.com/daffa09"
                                             target="_blank"
-                                            className="hover:text-blue-500"
+                                            className="text-sm md:text-xl hover:text-blue-500"
                                         >
                                             Github
                                         </a>
@@ -119,7 +119,7 @@ export default function Contact(props) {
                                         <a
                                             href="https://www.instagram.com/dafathan.v2/"
                                             target="_blank"
-                                            className="hover:text-blue-500"
+                                            className="text-sm md:text-xl hover:text-blue-500"
                                         >
                                             Instagram
                                         </a>
@@ -128,7 +128,7 @@ export default function Contact(props) {
                                         <a
                                             href="https://www.facebook.com/dafathan.v2"
                                             target="_blank"
-                                            className="hover:text-blue-500"
+                                            className="text-sm md:text-xl hover:text-blue-500"
                                         >
                                             Facebook
                                         </a>
@@ -138,7 +138,7 @@ export default function Contact(props) {
                         </div>
 
                         {/* right side */}
-                        <div className="text-black font-normal grid items-center">
+                        <div className="text-black font-normal grid items-center rounded-md p-6">
                             <form ref={form} onSubmit={sendEmail}>
                                 <div className="grid mb-3">
                                     <label
@@ -151,7 +151,7 @@ export default function Contact(props) {
                                         type="text"
                                         id="name"
                                         name="user_name"
-                                        className=" w-4/6 rounded-lg"
+                                        className="md:w-4/6 rounded-lg"
                                         required
                                     />
                                 </div>
@@ -166,11 +166,11 @@ export default function Contact(props) {
                                         type="email"
                                         id="email"
                                         name="user_email"
-                                        className=" w-4/6 rounded-lg"
+                                        className="md:w-4/6 rounded-lg"
                                         required
                                     />
                                 </div>
-                                <div className="grid mb-16">
+                                <div className="grid mb-11 md:mb-16">
                                     <label
                                         htmlFor="message"
                                         className="text-xl font-semibold text-white mb-1"
@@ -180,13 +180,13 @@ export default function Contact(props) {
                                     <textarea
                                         id="message"
                                         name="message"
-                                        className=" w-4/6 rounded-lg"
+                                        className="md:w-4/6 rounded-lg"
                                         required
                                     ></textarea>
                                 </div>
                                 <button
                                     type="submit"
-                                    className="bg-green-300 text-white rounded-md p-2 font-semibold w-4/6"
+                                    className="bg-green-500 text-white rounded-md p-2 font-semibold w-full md:w-4/6"
                                 >
                                     Send
                                 </button>

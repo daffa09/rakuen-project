@@ -11,8 +11,10 @@ use Inertia\Inertia;
 Route::get('/', [HomepageController::class, 'index'])->name('home');
 Route::get('/portofolio', [PortofolioController::class, 'index'])->name('portofolio');
 Route::get('/portofolio/all', [PortofolioController::class, 'allProject'])->name('portofolio.all');
+Route::get('/portofolio/detail/{id}', [PortofolioController::class, 'showDetail'])->name('portofolio.showDetail');
 
 Route::get('/articles', [ArticlesController::class, 'index'])->name('articles');
+Route::get('/articles/detail/{id}', [ArticlesController::class, 'showDetail'])->name('articles.showDetail');
 Route::get('/contact', [HomepageController::class, 'contact'])->name('contact');
 
 

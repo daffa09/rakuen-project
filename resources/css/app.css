@@ -1,9 +1,13 @@
-@import './homepage.css';
-@import './navbar.css';
-@import './colors.css';
+@import "./homepage.css";
+@import "./navbar.css";
+@import "./colors.css";
 
 .footer {
     margin-top: auto;
+}
+
+.content {
+    font-size: 1.5rem;
 }
 
 .content img {
@@ -11,6 +15,12 @@
     max-height: 500px;
     display: block;
     margin: 0 auto;
+}
+
+@media only screen and (max-width: 600px) {
+    .content {
+        font-size: 1rem;
+    }
 }
 
 @tailwind base;

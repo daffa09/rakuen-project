@@ -26,7 +26,7 @@ class ArticlesController extends Controller
             ->orderBy('articles.created_at')
             ->paginate(5);
 
-            $query->getCollection()->transform(function ($articles) {
+        $query->getCollection()->transform(function ($articles) {
             $articles->banner = asset('storage/' . $articles->banner);
             return $articles;
         });
@@ -38,7 +38,53 @@ class ArticlesController extends Controller
         ]);
     }
 
-    public function indexDashboard() {
+    public function showDetail(string $id)
+    {
+        $articles = Articles::query()
+            ->leftJoin('categories', 'articles.category_id', '=', 'categories.id')
+            ->selectRaw('
+                articles.id,
+                articles.title,
+                articles.banner,
+                articles.content,
+                articles.publish,
+                articles.created_at,
+                articles.updated_at,
+                articles.category_id,
+                MAX(categories.name) as category_name,
+                (
+                    SELECT GROUP_CONCAT(gallery.image_url)
+                    FROM gallery
+                    WHERE gallery.article_id = articles.id
+                ) as gallery
+            ')
+            ->where('articles.id', $id)
+            ->groupBy([
+                'articles.id',
+                'articles.title',
+                'articles.banner',
+                'articles.content',
+                'articles.publish',
+                'articles.created_at',
+                'articles.updated_at',
+                'articles.category_id',
+                'categories.name'
+            ])
+            ->first();
+
+        $articles->banner = asset('storage/' . $articles->banner);
+        $articles->gallery = $articles->gallery ? array_map(fn($item) => asset('storage/' . $item), explode(',', $articles->gallery)) : [];
+        $articles->lang_urls = [];
+
+        return Inertia::render('Detail', [
+            'title' => 'Articles',
+            'active' => 'Articles',
+            'data' => $articles
+        ]);
+    }
+
+    public function indexDashboard()
+    {
         $query = Articles::query()
             ->leftjoin('categories', 'articles.category_id', '=', 'categories.id')
             ->select('articles.*', 'categories.name as category_name')
@@ -75,7 +121,7 @@ class ArticlesController extends Controller
      */
     public function store(Request $request)
     {
-         // Validate the request
+        // Validate the request
         $validatedData = $request->validate([
             'title' => 'required|string|max:255',
             'banner' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg',
@@ -235,7 +281,7 @@ class ArticlesController extends Controller
      */
     public function update(Request $request)
     {
-         // Validate the request
+        // Validate the request
         $validatedData = $request->validate([
             'id' => 'required|string',
             'title' => 'required|string|max:255',
@@ -322,7 +368,8 @@ class ArticlesController extends Controller
         return redirect()->route('articles.indexDashboard')->with('success', 'Article created successfully');
     }
 
-    public function publish(string $id) {
+    public function publish(string $id)
+    {
         $articles = Articles::find($id);
         $articles->publish = 1;
         $articles->save();
@@ -330,7 +377,8 @@ class ArticlesController extends Controller
         return redirect()->route('articles.indexDashboard')->with('success', 'Articles published successfully');
     }
 
-    public function unpublish(string $id) {
+    public function unpublish(string $id)
+    {
         $articles = Articles::find($id);
         $articles->publish = 0;
         $articles->save();

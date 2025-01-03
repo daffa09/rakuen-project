@@ -18,8 +18,6 @@ export default function Index({ editData, auth }) {
     const [galleryPreview, setGalleryPreview] = useState([]);
     const [categories, setCategories] = useState([]);
 
-    console.log(editData);
-
     useEffect(() => {
         fetchCategories();
         if (editData.id) {
@@ -77,7 +75,6 @@ export default function Index({ editData, auth }) {
         event.preventDefault();
         try {
             if (editData.id) {
-                console.log(data);
                 post(route("projects.update"));
             } else {
                 post(route("projects.store"));

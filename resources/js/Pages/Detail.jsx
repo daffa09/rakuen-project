@@ -1,59 +1,30 @@
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { useForm, Head } from "@inertiajs/react";
-import { useState } from "react";
-import ConfirmationDialog from "@/Components/ConfirmationDialog";
+import { Head } from "@inertiajs/react";
 
-export default function Show({ data, auth }) {
+export default function Detail({ data }) {
     const galleryImage = [];
-    const { patch: patchRequest } = useForm();
-    const [isDialogOpen, setIsDialogOpen] = useState(false);
-    const [selectedId, setSelectedId] = useState(null);
-    const [dataPublish, setDataPublish] = useState(null);
-    const handlePublish = (id, dataPublish) => {
-        setSelectedId(id);
-        setDataPublish(dataPublish);
-        setIsDialogOpen(true);
-    };
 
     for (let i = 0; i < data.gallery.length; i += 3) {
         galleryImage.push(data.gallery.slice(i, i + 3));
     }
 
-    const confirmPublish = () => {
-        if (selectedId && !dataPublish) {
-            patchRequest(`/articles/publish/${selectedId}`);
-        } else {
-            patchRequest(`/articles/unpublish/${selectedId}`);
-        }
-        setIsDialogOpen(false);
-    };
-
     return (
-        <AuthenticatedLayout user={auth.user}>
+        <>
             <Head title="Show" />
 
-            <div className="py-12">
-                <div className="flex justify-between md:px-40">
+            <div className="py-12" style={{ backgroundColor: "#242424" }}>
+                <button
+                    onClick={() => {
+                        history.back();
+                    }}
+                    className="bg-red-500 text-white mx-2 md:mx-20 px-4 py-2 rounded-md mb-5"
+                >
+                    Back to List
+                </button>
+                <div className="flex justify-between px-3 md:px-40">
                     <div className="text-left mx-auto">
                         <h1 className="text-2xl font-bold md:text-6xl">
                             {data.title}
                         </h1>
-                    </div>
-                    <div className="text-xs md:text-base">
-                        <button
-                            onClick={() => {
-                                history.back();
-                            }}
-                            className="bg-red-500 text-white px-4 py-2 rounded-md mr-5"
-                        >
-                            Back to List
-                        </button>
-                        <button
-                            onClick={() => handlePublish(data.id, data.publish)}
-                            className="bg-green-500 text-white px-4 py-2 rounded-md"
-                        >
-                            {data.publish ? "Unpublish" : "Publish"}
-                        </button>
                     </div>
                 </div>
                 <div className="flex justify-center pt-10">
@@ -63,11 +34,21 @@ export default function Show({ data, auth }) {
                         className="w-2/3 md:w-2/5 h-auto rounded-md mx-auto"
                     />
                 </div>
+                {data.lang_urls.length > 0 && (
+                    <div className="flex justify-center pb-3 md:pb-10 pt-1">
+                        {data.lang_urls.map((lang, index) => (
+                            <i
+                                className={`text-sm md:text-2xl mr-1 ${lang}`}
+                                key={index}
+                            ></i>
+                        ))}
+                    </div>
+                )}
                 <div
-                    className="text-justify content mx-4 md:mx-72 mt-11"
+                    className="text-justify content mx-4 md:mx-72 pt-3"
                     dangerouslySetInnerHTML={{ __html: data.content }}
                 ></div>
-                {galleryImage.length > 1 && (
+                {galleryImage.length > 0 && (
                     <div className="text-center py-10">
                         <h1 className="text-3xl">Gallery</h1>
                     </div>
@@ -129,13 +110,6 @@ export default function Show({ data, auth }) {
                     })()}
                 </div>
             </div>
-
-            <ConfirmationDialog
-                isOpen={isDialogOpen}
-                onClose={() => setIsDialogOpen(false)}
-                onConfirm={confirmPublish}
-                message="Are you sure you want to publish this article?"
-            />
-        </AuthenticatedLayout>
+        </>
     );
 }

@@ -1,14 +1,14 @@
 export default function HeroPage() {
     return (
         <>
-            <div className="flex justify-center md:justify-between flex-wrap items-center max-w-screen-xl mx-auto mt-52 font-bai-jamjuree">
+            <div className="flex flex-wrap items-center max-w-screen-xl mx-auto justify-center md:justify-between mt-52 font-bai-jamjuree">
                 <div className="left">
                     <h1 className="text-2xl md:text-6xl font-bold color-gradient tracking-wide">
                         Daffa Fathan
                     </h1>
                     <p className="text-xl md:text-5xl font-bold tracking-wider">
-                        <span className="text-gray-500">Developing </span>
-                        App as Problem
+                        <span className="text-gray-500">Developing</span> App as
+                        Problem
                     </p>
                     <p className="text-xl md:text-5xl font-bold tracking-wider">
                         Solvers for Society
