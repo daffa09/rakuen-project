@@ -22,6 +22,7 @@ class Articles extends Model
         'created_at',
         'updated_by',
         'updated_at',
+        'lang_urls', // untuk Detail nya
     ];
 
     public function image()

@@ -186,7 +186,7 @@ export default function Contact(props) {
                                 </div>
                                 <button
                                     type="submit"
-                                    className="bg-green-300 text-white rounded-md p-2 font-semibold w-full md:w-4/6"
+                                    className="bg-green-500 text-white rounded-md p-2 font-semibold w-full md:w-4/6"
                                 >
                                     Send
                                 </button>

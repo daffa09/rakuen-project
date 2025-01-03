@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Head } from "@inertiajs/react";
+import { Head, Link } from "@inertiajs/react";
 import Navbar from "@/Components/Layouts/Navbar";
 import Footer from "@/Components/Layouts/Footer";
 import Paginator from "@/Components/Paginator";
@@ -79,11 +79,14 @@ export default function Portofolio(props) {
                             );
 
                             return (
-                                <div
+                                <Link
                                     className="max-w-full cursor-pointer p-5 grid md:grid-cols-2 items-center rounded-lg mx-10 md:mx-40 hover:bg-gray-600 mb-3 shadow-md border border-gray-500"
                                     key={i}
+                                    href={`/portofolio/detail/${project.id}`}
                                 >
-                                    <a href="#">
+                                    <a
+                                        href={`/portofolio/detail/${project.id}`}
+                                    >
                                         {isNew && i === 0 && (
                                             <img
                                                 className="mb-5 w-7"
@@ -125,7 +128,7 @@ export default function Portofolio(props) {
                                             {truncatedContent}
                                         </p>
                                     </div>
-                                </div>
+                                </Link>
                             );
                         })
                     )}
