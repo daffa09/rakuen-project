@@ -23,7 +23,7 @@ export default function Navbar({ active }) {
     }, []);
 
     return (
-        <nav className="bg-black bg-opacity-50">
+        <nav className="bg-black bg-opacity-80 md:bg-opacity-50">
             <div className=" font-bai-jamjuree flex flex-wrap items-center justify-between p-2 mx-2 md:mx-10">
                 {/* logo DF */}
                 <a
@@ -59,7 +59,7 @@ export default function Navbar({ active }) {
                 <div
                     className={`${
                         isMenuOpen
-                            ? "absolute top-14 left-0 w-full bg-black bg-opacity-50"
+                            ? "absolute top-14 left-0 w-full bg-black bg-opacity-80"
                             : "hidden"
                     } md:relative md:block md:w-auto`}
                     id="navbar-default"

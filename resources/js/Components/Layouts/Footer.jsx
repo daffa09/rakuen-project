@@ -1,7 +1,7 @@
 export default function Footer() {
     return (
         <>
-            <div className="bg-footer footer p-10 font-bai-jamjuree">
+            <div className="bg-footer footer p-1 md:p-10 font-bai-jamjuree">
                 <div className="border-t-4 border-gradient mx-14 rounded-sm hidden md:block"></div>
 
                 <div className="block md:flex justify-between mx-5 my-7">
@@ -25,7 +25,7 @@ export default function Footer() {
                 </div>
 
                 <div className="block md:flex justify-between mx-5">
-                    <div className="">
+                    <div className="text-sm md:text-xl">
                         <span className="font-semibold">
                             {" "}
                             @{new Date().getFullYear()} Daffa Fathan{" "}
