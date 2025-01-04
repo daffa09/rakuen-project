@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-export default function Navbar({ active }) {
+export default function Navbar({ active, backToMenu }) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const toggleMenu = () => {
@@ -25,13 +25,34 @@ export default function Navbar({ active }) {
     return (
         <nav className="bg-black bg-opacity-80 md:bg-opacity-50">
             <div className=" font-bai-jamjuree flex flex-wrap items-center justify-between p-2 mx-2 md:mx-10">
-                {/* logo DF */}
-                <a
-                    href={route("home")}
-                    className="flex items-center space-x-3 rtl:space-x-reverse"
-                >
-                    <img src="/img/logo.png" className="h-8" alt="DF Logo" />
-                </a>
+                <div>
+                    {backToMenu ? (
+                        <>
+                            <button
+                                className="focus:outline-none flex items-center space-x-3"
+                                onClick={() => history.back()}
+                            >
+                                <i className="ri-arrow-left-line text-2xl"></i>
+                                <p className="text-xl font-medium mb-1">
+                                    Back to Menu
+                                </p>
+                            </button>
+                        </>
+                    ) : (
+                        <a
+                            href={route("home")}
+                            className="flex items-center space-x-3 rtl:space-x-reverse"
+                        >
+                            {/* logo DF */}
+                            <img
+                                src="/img/logo.png"
+                                className="h-8"
+                                alt="DF Logo"
+                            />
+                        </a>
+                    )}
+                </div>
+
                 {/* menus */}
                 <button
                     onClick={toggleMenu}

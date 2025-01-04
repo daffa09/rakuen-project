@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="icon" href="/img/logo.ico" />
-        <title inertia>{{ config('app.name', 'Laravel') }}</title>
+        <title inertia>{{ config('app.name', 'Portofolio') }}</title>
         <meta name="description" content="Experienced programmer with over 4 years in web and software development.Offering IT consultancy services in Depok for business and services.">
         <meta name="keywords" content="programmer, artificial intelligence, AI, web development, software development, IT consultant, Depok, digital consultation, business consultation, services consultation">
         <meta name="author" content="Daffa Fathan">

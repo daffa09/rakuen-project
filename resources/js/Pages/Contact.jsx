@@ -82,9 +82,9 @@ export default function Contact(props) {
                                 together!
                             </p>
                             <div className="mt-5">
-                                <h3 className="text-xl md:text-2xl font-semibold tracking-wide">
+                                <h2 className="text-xl md:text-2xl font-semibold tracking-wide">
                                     Email
-                                </h3>
+                                </h2>
                                 <a
                                     href="mailto:daffa.fathan9@gmail.com"
                                     className="text-sm md:text-xl text-blue-500 font-semibold"
@@ -93,9 +93,9 @@ export default function Contact(props) {
                                 </a>
                             </div>
                             <div className="mt-5 font-semibold tracking-wide">
-                                <h3 className="font-bold text-xl md:text-2xl mb-2">
+                                <h2 className="font-bold text-xl md:text-2xl mb-2">
                                     Social Media
-                                </h3>
+                                </h2>
                                 <ul>
                                     <li>
                                         <a
@@ -149,7 +149,7 @@ export default function Contact(props) {
                                     </label>
                                     <input
                                         type="text"
-                                        id="name"
+                                        id="user_name"
                                         name="user_name"
                                         className="md:w-4/6 rounded-lg"
                                         required
@@ -164,7 +164,7 @@ export default function Contact(props) {
                                     </label>
                                     <input
                                         type="email"
-                                        id="email"
+                                        id="user_email"
                                         name="user_email"
                                         className="md:w-4/6 rounded-lg"
                                         required

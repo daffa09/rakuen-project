@@ -76,13 +76,13 @@ export default function Show({ data, auth }) {
                     dangerouslySetInnerHTML={{ __html: data.content }}
                 ></div>
                 {galleryImage.length > 1 && (
-                    <div className="text-center py-10">
+                    <div className="text-center py-6">
                         <h1 className="text-3xl">Gallery</h1>
                     </div>
                 )}
                 {galleryImage.length > 1 && (
                     <div
-                        className={`m-auto w-2/3 grid grid-cols-2 ${
+                        className={`m-auto w-2/3 grid grid-cols-2 gap-2 md:gap-0 ${
                             galleryImage.length === 1
                                 ? "md:grid-cols-1"
                                 : galleryImage.length === 2
@@ -90,7 +90,7 @@ export default function Show({ data, auth }) {
                                 : galleryImage.length === 3
                                 ? "md:grid-cols-3"
                                 : "md:grid-cols-4"
-                        } gap-4`}
+                        }`}
                     >
                         {(() => {
                             const elements = [];
@@ -116,7 +116,7 @@ export default function Show({ data, auth }) {
                                                     imageElements.push(
                                                         <div key={imageIndex}>
                                                             <img
-                                                                className="h-auto max-w-52 rounded-lg"
+                                                                className="h-auto md:max-w-52 rounded-lg"
                                                                 src={
                                                                     group[
                                                                         imageIndex

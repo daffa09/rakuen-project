@@ -1,4 +1,5 @@
 import { Head } from "@inertiajs/react";
+import Navbar from "@/Components/Layouts/Navbar";
 
 export default function Detail({ data }) {
     const galleryImage = [];
@@ -10,16 +11,11 @@ export default function Detail({ data }) {
     return (
         <>
             <Head title="Show" />
+            <div className="bg-black bg-opacity-80">
+                <Navbar backToMenu={true} />
+            </div>
 
             <div className="py-12" style={{ backgroundColor: "#242424" }}>
-                <button
-                    onClick={() => {
-                        history.back();
-                    }}
-                    className="bg-red-500 text-white mx-2 md:mx-20 px-4 py-2 rounded-md mb-5"
-                >
-                    Back to List
-                </button>
                 <div className="flex justify-between px-3 md:px-40">
                     <div className="text-left mx-auto">
                         <h1 className="text-2xl font-bold md:text-6xl">
@@ -49,12 +45,12 @@ export default function Detail({ data }) {
                     dangerouslySetInnerHTML={{ __html: data.content }}
                 ></div>
                 {galleryImage.length > 0 && (
-                    <div className="text-center py-10">
+                    <div className="text-center py-6">
                         <h1 className="text-3xl">Gallery</h1>
                     </div>
                 )}
                 <div
-                    className={`m-auto w-2/3 grid grid-cols-2 ${
+                    className={`m-auto w-2/3 grid grid-cols-2 gap-2 md:gap-0 ${
                         galleryImage.length === 1
                             ? "md:grid-cols-1"
                             : galleryImage.length === 2
@@ -62,7 +58,7 @@ export default function Detail({ data }) {
                             : galleryImage.length === 3
                             ? "md:grid-cols-3"
                             : "md:grid-cols-4"
-                    } gap-4`}
+                    }`}
                 >
                     {(() => {
                         const elements = [];
@@ -88,7 +84,7 @@ export default function Detail({ data }) {
                                                 imageElements.push(
                                                     <div key={imageIndex}>
                                                         <img
-                                                            className="h-auto max-w-52 rounded-lg"
+                                                            className="h-auto md:max-w-52 rounded-lg"
                                                             src={
                                                                 group[
                                                                     imageIndex
