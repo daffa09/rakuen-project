@@ -61,4 +61,9 @@ Route::middleware('auth', 'verified')->group(function () {
     Route::delete('/categories/{id}', [CategoryController::class, 'destroy'])->name('categories.destroy');
 });
 
+Route::get('/create-symlink', function () {
+    symlink(storage_path('/app/public'), public_path('storage'));
+    echo "Symlink Created. Thanks";
+});
+
 require __DIR__ . '/auth.php';
