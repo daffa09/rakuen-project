@@ -3,6 +3,7 @@ import { Head, Link } from "@inertiajs/react";
 import Navbar from "@/Components/Layouts/Navbar";
 import Footer from "@/Components/Layouts/Footer";
 import Paginator from "@/Components/Paginator";
+import { formatDate } from "@/Utils";
 
 // Utility function to strip HTML tags
 const stripHtmlTags = (html) => {
@@ -94,15 +95,23 @@ export default function Portofolio(props) {
                                                 alt="New Project"
                                             />
                                         )}
-                                        {project.lang_urls &&
-                                            project.lang_urls.map(
-                                                (lang, index) => (
-                                                    <i
-                                                        className={`text-sm md:text-4xl mr-1 md:mr-3 ${lang}`}
-                                                        key={index}
-                                                    ></i>
-                                                )
-                                            )}
+                                        <div className="flex justify-between">
+                                            <div>
+                                                {project.lang_urls &&
+                                                    project.lang_urls.map(
+                                                        (lang, index) => (
+                                                            <i
+                                                                className={`text-sm md:text-4xl mr-1 md:mr-3 ${lang}`}
+                                                                key={index}
+                                                            ></i>
+                                                        )
+                                                    )}
+                                            </div>
+
+                                            <h1 className="text-xs md:text-xl font-semibold mt-2 md:mt-4">
+                                                {formatDate(project.created_at)}
+                                            </h1>
+                                        </div>
 
                                         <img
                                             className="object-cover w-full md:h-64 rounded-lg mt-2"

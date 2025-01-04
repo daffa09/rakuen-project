@@ -3,6 +3,7 @@ import { Head, Link } from "@inertiajs/react";
 import Navbar from "@/Components/Layouts/Navbar";
 import Footer from "@/Components/Layouts/Footer";
 import Paginator from "@/Components/Paginator";
+import { formatDate } from "@/Utils";
 
 // Utility function to strip HTML tags
 const stripHtmlTags = (html) => {
@@ -104,6 +105,13 @@ export default function Articles(props) {
                                                     alt="New articles"
                                                 />
                                             )}
+                                            <div className="flex justify-end">
+                                                <h1 className="text-xs md:text-xl font-semibold mt-2 md:mt-4">
+                                                    {formatDate(
+                                                        articles.created_at
+                                                    )}
+                                                </h1>
+                                            </div>
                                             <img
                                                 className="object-cover w-full md:h-64 rounded-lg mt-2"
                                                 src={articles.banner}

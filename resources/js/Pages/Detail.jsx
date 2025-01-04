@@ -1,5 +1,6 @@
 import { Head } from "@inertiajs/react";
 import Navbar from "@/Components/Layouts/Navbar";
+import { formatDate } from "@/Utils";
 
 export default function Detail({ data }) {
     const galleryImage = [];
@@ -30,16 +31,21 @@ export default function Detail({ data }) {
                         className="w-2/3 md:w-2/5 h-auto rounded-md mx-auto"
                     />
                 </div>
-                {data.lang_urls.length > 0 && (
-                    <div className="flex justify-center pb-3 md:pb-10 pt-1">
+
+                <div className="flex justify-between pb-4 pt-1 w-2/3 md:w-2/5 mx-auto">
+                    <div>
                         {data.lang_urls.map((lang, index) => (
                             <i
-                                className={`text-sm md:text-2xl mr-1 ${lang}`}
+                                className={`text-xs md:text-2xl mr-1 ${lang}`}
                                 key={index}
                             ></i>
                         ))}
                     </div>
-                )}
+                    <h1 className="text-xs font-bold md:text-xl">
+                        {"( " + formatDate(data.created_at) + " )"}
+                    </h1>
+                </div>
+
                 <div
                     className="text-justify content mx-4 md:mx-72 pt-3"
                     dangerouslySetInnerHTML={{ __html: data.content }}

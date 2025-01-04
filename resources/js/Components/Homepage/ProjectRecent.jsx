@@ -86,7 +86,7 @@ export default function ProjectRecent({ data }) {
                                             </p>
                                             <a
                                                 href={`/portofolio/detail/${project.id}`}
-                                                className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-green-600 rounded-lg hover:bg-green-700 focus:ring-4 focus:ring-green-800"
+                                                className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-green-500 rounded-lg hover:bg-green-700 focus:ring-4 focus:ring-green-800"
                                                 aria-label={`Read more about: ${project.title}`}
                                             >
                                                 Read more

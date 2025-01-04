@@ -2,6 +2,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { useForm, Head } from "@inertiajs/react";
 import { useState } from "react";
 import ConfirmationDialog from "@/Components/ConfirmationDialog";
+import { formatDate } from "@/Utils";
 
 export default function Show({ data, auth }) {
     const galleryImage = [];
@@ -62,6 +63,11 @@ export default function Show({ data, auth }) {
                         alt={data.title}
                         className="w-2/3 md:w-2/5 h-auto rounded-md mx-auto"
                     />
+                </div>
+                <div className="flex justify-end pb-4 pt-1 w-2/3 md:w-2/5 mx-auto">
+                    <h1 className="text-xs font-bold md:text-xl">
+                        {"( " + formatDate(data.created_at) + " )"}
+                    </h1>
                 </div>
                 <div
                     className="text-justify content mx-4 md:mx-72 mt-11"

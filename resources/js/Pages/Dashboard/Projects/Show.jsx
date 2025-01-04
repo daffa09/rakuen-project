@@ -2,6 +2,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { useForm, Head } from "@inertiajs/react";
 import { useState } from "react";
 import ConfirmationDialog from "@/Components/ConfirmationDialog";
+import { formatDate } from "@/Utils";
 
 export default function Show({ data, auth }) {
     const galleryImage = [];
@@ -63,13 +64,18 @@ export default function Show({ data, auth }) {
                         className="w-2/3 md:w-2/5 h-auto rounded-md mx-auto"
                     />
                 </div>
-                <div className="flex justify-center pb-10 pt-1">
-                    {data.lang_urls.map((lang, index) => (
-                        <i
-                            className={`text-sm md:text-2xl mr-1 ${lang}`}
-                            key={index}
-                        ></i>
-                    ))}
+                <div className="flex justify-between pb-4 pt-1 w-2/3 md:w-2/5 mx-auto">
+                    <div>
+                        {data.lang_urls.map((lang, index) => (
+                            <i
+                                className={`text-xs md:text-2xl mr-1 ${lang}`}
+                                key={index}
+                            ></i>
+                        ))}
+                    </div>
+                    <h1 className="text-xs font-bold md:text-xl">
+                        {"( " + formatDate(data.created_at) + " )"}
+                    </h1>
                 </div>
                 <div
                     className="text-justify content mx-4 md:mx-72"
