@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://daffathan.my.id/sitemap.xml

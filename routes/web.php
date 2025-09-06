@@ -66,4 +66,9 @@ Route::get('/create-symlink', function () {
     echo "Symlink Created. Thanks";
 });
 
+Route::get('/sitemap.xml', function () {
+    return response()->file(public_path('sitemap.xml'));
+});
+
+
 require __DIR__ . '/auth.php';
