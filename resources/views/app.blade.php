@@ -8,6 +8,7 @@
         <meta name="description" content="Experienced programmer with over 4 years in web and software development.Offering IT consultancy services in Depok for business and services.">
         <meta name="keywords" content="programmer, artificial intelligence, AI, web development, software development, IT consultant, Depok, digital consultation, business consultation, services consultation">
         <meta name="author" content="Daffa Fathan">
+        <meta name="google-site-verification" content="lPiZQwL4agJzp0rd1FSpNKvuxFFcYCuYmNMaNzXnIaE" />
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
