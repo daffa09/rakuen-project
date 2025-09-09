@@ -28,7 +28,8 @@ services:
         ports:
             - "9000:80"
         volumes:
-            - /root/rakuen-project/deployment/nginx.conf:/etc/nginx/conf.d/default.conf
+            - /root/rakuen-project/public/build:var/www/public/build
+            - ./nginx.conf:/etc/nginx/conf.d/default.conf
         depends_on:
             - php
         networks:
