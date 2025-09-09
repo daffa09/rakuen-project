@@ -1,21 +1,20 @@
 #!/bin/sh
 set -e
 
-# Copy env jika belum ada
-if [ ! -f /var/www/.env ]; then
-    cp /var/www/.env.docker /var/www/.env
-fi
+# Tunggu MySQL siap
+while ! nc -z $DB_HOST $DB_PORT; do
+  echo "Waiting for MySQL..."
+  sleep 2
+done
 
-# Tunggu DB siap
-echo "Waiting for MySQL..."
-dockerize -wait tcp://$DB_HOST:$DB_PORT -timeout 60s
-echo "MySQL ready!"
+echo "MySQL is ready!"
 
 # Generate APP_KEY jika belum ada
 php artisan key:generate --force
 
-# Jalankan migrate
+# Jalankan migrate otomatis
 php artisan migrate --force
 
-# Jalankan PHP-FPM
+# Jalankan PHP-FPM dan Nginx
 php-fpm
+nginx -g "daemon off;"
