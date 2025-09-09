@@ -1,12 +1,11 @@
 version: "3.3"
 
 services:
-    app:
+    php:
         build:
             context: ..
-            dockerfile: deployment/Dockerfile
-        container_name: rakuen_project
-        restart: unless-stopped
+            dockerfile: deployment/php.Dockerfile
+        container_name: rakuen-php
         environment:
             APP_ENV: production
             APP_DEBUG: "false"
@@ -16,15 +15,27 @@ services:
             DB_DATABASE: rakuen_project
             DB_USERNAME: root
             DB_PASSWORD: rakuenProject
-        ports:
-            - "9000:9000"
-            - "8443:443"
+        volumes:
+            - ..:/var/www
         depends_on:
             - mysql
+        networks:
+            - laravel
+
+    nginx:
+        build:
+            context: ..
+            dockerfile: deployment/nginx.Dockerfile
+        container_name: rakuen-nginx
+        ports:
+            - "9000:80"
         volumes:
-            - ./:/app
-            - ./storage:/app/storage
-            - ./bootstrap/cache:/app/bootstrap/cache
+            - ..:/var/www
+            - ./nginx.conf:/etc/nginx/conf.d/default.conf
+        depends_on:
+            - php
+        networks:
+            - laravel
 
     mysql:
         image: mysql:8.0
@@ -37,6 +48,11 @@ services:
             - "3306:3306"
         volumes:
             - db_data:/var/lib/mysql
+        networks:
+            - laravel
+
+networks:
+    laravel:
 
 volumes:
     db_data:
