@@ -1,0 +1,39 @@
+version: "3.3"
+
+services:
+    app:
+        build:
+            context: ..
+            dockerfile: deployment/Dockerfile
+        container_name: rakuen_project
+        restart: unless-stopped
+        environment:
+            APP_ENV: production
+            APP_DEBUG: "false"
+            DB_CONNECTION: mysql
+            DB_HOST: mysql
+            DB_PORT: 3306
+            DB_DATABASE: rakuen_project
+            DB_USERNAME: root
+            DB_PASSWORD: rakuenProject
+        ports:
+            - "9000:80"
+            - "8443:443"
+            - "8443:443/udp"
+        depends_on:
+            - mysql
+
+    mysql:
+        image: mysql:8.0
+        restart: unless-stopped
+        environment:
+            MYSQL_ROOT_PASSWORD: rakuenProject
+            MYSQL_DATABASE: rakuen_project
+            MYSQL_ROOT_HOST: "%"
+        ports:
+            - "3306:3306"
+        volumes:
+            - db_data:/var/lib/mysql
+
+volumes:
+    db_data:
