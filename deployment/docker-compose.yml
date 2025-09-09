@@ -4,7 +4,7 @@ services:
     php:
         build:
             context: .
-            dockerfile: deployment/Dockerfile.php
+            dockerfile: deployment/php.Dockerfile
         container_name: rakuen-php
         environment:
             APP_ENV: production
@@ -23,7 +23,7 @@ services:
     nginx:
         build:
             context: .
-            dockerfile: deployment/Dockerfile.nginx
+            dockerfile: deployment/nginx.Dockerfile
         container_name: rakuen-nginx
         ports:
             - "9000:80"
