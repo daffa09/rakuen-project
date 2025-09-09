@@ -1,17 +1,20 @@
 # ===========================
-# Stage 1: Build frontend React
+# Stage 1: Build Frontend React/Vite
 # ===========================
-FROM node:22-alpine AS react-build
+FROM node:22-alpine AS node-build
 WORKDIR /app
 
-# Copy package.json dan package-lock.json / yarn.lock
-COPY package*.json ./
+# Copy package files + vite config + index.html
+COPY package*.json vite.config.js index.html ./
 
 # Install dependencies
 RUN npm install
 
-# Copy source frontend React (sesuaikan folder React di projectmu)
-COPY resources/js ./
+# Copy seluruh source frontend (misal resources/js)
+COPY resources/js ./resources/js
+COPY resources/css ./resources/css
+
+# Build production
 RUN npm run build
 
 # ===========================
@@ -34,16 +37,16 @@ WORKDIR /var/www
 # Copy seluruh project Laravel
 COPY . .
 
-# Copy hasil build React dari stage 1 ke public/build
-COPY --from=react-build /app/dist /var/www/public/build  # atau /app/build tergantung output React
+# Copy hasil build React dari stage 1
+COPY --from=node-build /app/dist /var/www/public/build  # pastikan output Vite sesuai config
 
-# Install PHP deps
+# Install PHP dependencies
 RUN composer install --no-dev --optimize-autoloader
 
 # Set permissions storage & cache
 RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
 
-# Copy entrypoint script
+# Copy entrypoint
 COPY ./deployment/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
