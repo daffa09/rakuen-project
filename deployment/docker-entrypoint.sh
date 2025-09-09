@@ -11,6 +11,9 @@ echo "Waiting for MySQL to be ready..."
 dockerize -wait tcp://$DB_HOST:$DB_PORT -timeout 60s
 echo "MySQL is ready!"
 
+# Set permission
+chmod -R 755 /var/www/public /var/www/public/build
+
 # Generate APP_KEY jika belum ada
 php artisan key:generate --force
 
