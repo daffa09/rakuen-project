@@ -1,0 +1,1 @@
+const s=e=>{const t=new Date(e),r=["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"],a=String(t.getDate()).padStart(2,"0"),n=r[t.getMonth()],o=t.getFullYear();return`${a} ${n} ${o}`};export{s as f};
