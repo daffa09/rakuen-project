@@ -37,6 +37,7 @@ services:
     mysql:
         image: mysql:8.0
         restart: unless-stopped
+        container_name: mysql
         environment:
             MYSQL_ROOT_PASSWORD: rakuenProject
             MYSQL_DATABASE: rakuen_project
