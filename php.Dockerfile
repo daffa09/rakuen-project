@@ -36,10 +36,6 @@ COPY --from=node-build /app/public/build /var/www/public/build
 # Install PHP dependencies
 RUN composer install --no-dev --optimize-autoloader
 
-# Set permissions
-RUN chown -R nginx:nginx /var/www/public/build \
-    && chmod -R 755 /var/www/public/build
-
 # Copy entrypoint
 COPY ./docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
