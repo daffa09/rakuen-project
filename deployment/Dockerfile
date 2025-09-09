@@ -32,36 +32,56 @@ COPY . .
 RUN composer dump-autoload --optimize \
     && composer run-script post-autoload-dump
 
-# -----------------------
-# 3) Final FrankenPHP image
-# -----------------------
-FROM dunglas/frankenphp:1-php8.3
 
-# install PHP extensions needed by Laravel
-RUN install-php-extensions \
-    pdo_mysql \
-    mbstring \
-    exif \
-    pcntl \
-    bcmath \
-    zip \
-    gd \
-    intl
+# -----------------------
+# 3) PHP-FPM + Nginx final image
+# -----------------------
+FROM php:8.3-fpm-alpine AS php-nginx
+
+# install extensions
+RUN apk add --no-cache \
+    nginx \
+    supervisor \
+    curl \
+    bash \
+    icu-dev \
+    libpng-dev \
+    libjpeg-turbo-dev \
+    libzip-dev \
+    oniguruma-dev \
+    && docker-php-ext-install \
+        pdo_mysql \
+        mbstring \
+        exif \
+        pcntl \
+        bcmath \
+        zip \
+        gd \
+        intl
 
 WORKDIR /app
 
 # copy source code
 COPY . .
 
-# copy vendor from composer builder
+# copy vendor dari composer builder
 COPY --from=composer-builder /app/vendor ./vendor
 
 # copy Vite assets
 COPY --from=node-builder /app/public/build ./public/build
 
-# set permissions for storage and cache
+# set permissions
 RUN chown -R www-data:www-data storage bootstrap/cache \
     && chmod -R 775 storage bootstrap/cache
 
-# expose FrankenPHP HTTP port
+# -----------------------
+# Nginx & Supervisor setup
+# -----------------------
+# hapus default nginx.conf, ganti dengan custom
+COPY ./docker/nginx.conf /etc/nginx/nginx.conf
+COPY ./docker/supervisord.conf /etc/supervisord.conf
+
+# expose port
 EXPOSE 9000
+
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]

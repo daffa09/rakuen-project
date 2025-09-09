@@ -19,9 +19,12 @@ services:
         ports:
             - "9000:9000"
             - "8443:443"
-            - "8443:443/udp"
         depends_on:
             - mysql
+        volumes:
+            - ./:/app
+            - ./storage:/app/storage
+            - ./bootstrap/cache:/app/bootstrap/cache
 
     mysql:
         image: mysql:8.0
