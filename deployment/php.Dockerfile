@@ -38,6 +38,10 @@ RUN composer install --no-dev --optimize-autoloader
 # Set permission
 RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
 
+# Set permission Laravel
+RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache /var/www/public \
+    && chmod -R 755 /var/www/public /var/www/public/build
+
 # Copy entrypoint
 COPY ./deployment/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
