@@ -38,9 +38,8 @@ COPY --from=node-build /app/public/build /var/www/public/build
 # Install PHP dependencies
 RUN composer install --no-dev --optimize-autoloader
 
-# Set permission agar Nginx dan PHP bisa baca
-RUN chown -R www-data:www-data /var/www/public/build /var/www/storage /var/www/bootstrap/cache \
-    && chmod -R 755 /var/www/public/build /var/www/storage /var/www/bootstrap/cache
+RUN chown -R www-data:www-data /var/www/public /var/www/storage /var/www/bootstrap/cache \
+    && chmod -R 755 /var/www/public /var/www/storage /var/www/bootstrap/cache
 
 # Copy nginx config
 COPY ./nginx.conf /etc/nginx/conf.d/default.conf
