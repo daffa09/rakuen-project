@@ -64,4 +64,4 @@ RUN chown -R www-data:www-data storage bootstrap/cache \
     && chmod -R 775 storage bootstrap/cache
 
 # expose FrankenPHP HTTP port
-EXPOSE 80
+EXPOSE 9000

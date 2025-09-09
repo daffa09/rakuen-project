@@ -17,7 +17,7 @@ services:
             DB_USERNAME: root
             DB_PASSWORD: rakuenProject
         ports:
-            - "9000:80"
+            - "9000:9000"
             - "8443:443"
             - "8443:443/udp"
         depends_on:
