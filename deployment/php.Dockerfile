@@ -11,7 +11,7 @@ COPY package*.json ./
 RUN npm install
 
 # Copy source frontend React (sesuaikan folder React di projectmu)
-COPY resources/js ./  # ini path ke source React
+COPY resources/js ./
 RUN npm run build
 
 # ===========================
