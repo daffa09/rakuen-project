@@ -44,10 +44,10 @@ RUN chown -R www-data:www-data /var/www/public/build /var/www/storage /var/www/b
     && chmod -R 755 /var/www/public/build /var/www/storage /var/www/bootstrap/cache
 
 # Copy nginx config
-COPY ./deployment/nginx.conf /etc/nginx/conf.d/default.conf
+COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 
 # Copy entrypoint
-COPY ./deployment/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+COPY ./docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
 # Expose port
