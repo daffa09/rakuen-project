@@ -78,10 +78,11 @@ RUN chown -R www-data:www-data storage bootstrap/cache \
 # Nginx & Supervisor setup
 # -----------------------
 # hapus default nginx.conf, ganti dengan custom
-COPY ./docker/nginx.conf /etc/nginx/nginx.conf
-COPY ./docker/supervisord.conf /etc/supervisord.conf
+COPY ./deployment/nginx.conf /etc/nginx/nginx.conf
+COPY ./deployment/supervisord.conf /etc/supervisord.conf
 
-# expose port
-EXPOSE 9000
+# expose port (nginx listen 80, bukan 9000 lagi)
+EXPOSE 80
 
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
+
