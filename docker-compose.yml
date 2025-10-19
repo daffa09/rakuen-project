@@ -7,7 +7,7 @@ services:
             dockerfile: Dockerfile
         container_name: rakuen-app
         ports:
-            - "42983:80" # expose ke host
+            - "9000:80"
         environment:
             APP_ENV: production
             APP_DEBUG: "false"
@@ -31,7 +31,7 @@ services:
             MYSQL_DATABASE: rakuen_project
             MYSQL_ROOT_HOST: "%"
         ports:
-            - "43567:3306"
+            - "3306:3306"
         volumes:
             - db_data:/var/lib/mysql
         networks:
