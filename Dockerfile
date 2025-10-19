@@ -1,18 +1,4 @@
 # ===========================
-# Stage 1: Node build frontend
-# ===========================
-FROM node:22-alpine AS node-build
-WORKDIR /app
-
-# Copy package.json & package-lock.json / yarn.lock
-COPY package*.json ./
-
-# Install dependencies & build
-RUN npm install
-COPY . .
-RUN npm run build
-
-# ===========================
 # Stage 2: PHP + Nginx
 # ===========================
 FROM php:8.3-fpm
@@ -38,8 +24,12 @@ COPY --from=node-build /app/public/build /var/www/public/build
 # Install PHP dependencies
 RUN composer install --no-dev --optimize-autoloader
 
+# Set permissions
 RUN chown -R www-data:www-data /var/www/public /var/www/storage /var/www/bootstrap/cache \
     && chmod -R 755 /var/www/public /var/www/storage /var/www/bootstrap/cache
+
+# Disable default Nginx sites
+RUN rm -f /etc/nginx/sites-enabled/default /etc/nginx/conf.d/default.conf.default 2>/dev/null || true
 
 # Copy nginx config
 COPY ./nginx.conf /etc/nginx/conf.d/default.conf
