@@ -2,7 +2,7 @@
 <!-- slug: rakuen-project -->
 <!-- title: Rakuen Project -->
 <!-- description: Full-stack web application built with Laravel 11, Inertia.js, and modern frontend stack featuring articles, portfolio, and project management -->
-<!-- image: [https://github.com/user-attachments/assets/fac5fb72-2c5c-4eba-9d0e-3be27a81ee3a -->
+<!-- image: https://github.com/user-attachments/assets/fac5fb72-2c5c-4eba-9d0e-3be27a81ee3a -->
 <!-- tags: laravel, inertia, react, vue, tailwindcss, fullstack, portfolio-cms -->
 
 # Rakuen Project
